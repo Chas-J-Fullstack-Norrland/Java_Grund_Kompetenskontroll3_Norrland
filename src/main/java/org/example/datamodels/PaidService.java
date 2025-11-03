@@ -1,0 +1,7 @@
+package org.example.datamodels;
+
+public interface PaidService {
+
+    int price();
+
+}
