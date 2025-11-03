@@ -1,0 +1,62 @@
+package org.example.factory;
+
+import org.slf4j.MDC;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
+public final class LogFactory {
+
+    public static final String MDC_RUN_ID_KEY = "runId";
+    public static final String LOGBACK_FILE_NAME_KEY = "LOG_FULL_FILE_PATH";
+    private static final String BASE_DIR_PROPERTY_KEY = "app.log.baseDir";
+
+    private static final Logger factoryLogger = LoggerFactory.getLogger(LogFactory.class);
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmmss");
+
+    public static String loggingContext() {
+
+        String DEFAULT_BASE_DIR = "reports";
+        String baseDir = System.getProperty(BASE_DIR_PROPERTY_KEY, DEFAULT_BASE_DIR);
+        String runId = UUID.randomUUID().toString().substring(0, 8);
+
+        LocalDateTime now = LocalDateTime.now();
+        String date = now.format(DATE_FORMATTER);
+        String time = now.format(TIME_FORMATTER);
+
+        Path reportDirPath = Paths.get(baseDir, date);
+
+        try {
+            Files.createDirectories(reportDirPath);
+
+            String logFileName = String.format("%s-%s.json", time, runId);
+            Path logFilePath = reportDirPath.resolve(logFileName);
+            String absolutePath = logFilePath.toAbsolutePath().toString();
+
+            System.setProperty(LOGBACK_FILE_NAME_KEY, absolutePath);
+            MDC.put(MDC_RUN_ID_KEY, runId);
+
+            factoryLogger.info("Logging initialized. Reports will be saved to: {}", absolutePath);
+
+        } catch (IOException e) {
+            factoryLogger.error("FATAL: Failed to create report directory structure: {}", reportDirPath, e);
+            throw new RuntimeException("Cannot initialize logging file path.", e);
+        }
+
+        return runId;
+    }
+
+    public static void cleanupLoggingContext() {
+        MDC.remove(MDC_RUN_ID_KEY);
+    }
+}
+
