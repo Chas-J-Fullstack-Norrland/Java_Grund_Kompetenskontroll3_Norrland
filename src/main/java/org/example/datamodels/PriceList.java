@@ -4,15 +4,14 @@ public class PriceList {
 
     public static int maintenencePrice(int yearModel){
 
-        int returnPrice = 0;
 
-        if(yearModel>2020){returnPrice = 1500;}
-        if(yearModel>2015){returnPrice = 1800;}
-        if(yearModel>2010){returnPrice = 2000;}
-        if(yearModel>2005){returnPrice = 2300;}
-        if(yearModel<2005){returnPrice = 2800;}
+        if(yearModel>2020){return 1500;}
+        if(yearModel>2015){return 1800;}
+        if(yearModel>2010){return 2000;}
+        if(yearModel>2005){return 2300;}
+        if(yearModel<2005){return 2800;}
 
-        return returnPrice;
+        throw new NumberFormatException("Int yearModel did not match any listed valueRange");
 
     }
 
