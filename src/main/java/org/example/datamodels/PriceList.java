@@ -2,17 +2,21 @@ package org.example.datamodels;
 
 public class PriceList {
 
-    public static int service(int yearModel){
+    public static int maintenencePrice(int yearModel){
 
+        int returnPrice = 0;
 
-        //keep prices in an easy to edit list of sorts,
-        // Compare with year model to fetch from said list
+        if(yearModel>2020){returnPrice = 1500;}
+        if(yearModel>2015){returnPrice = 1800;}
+        if(yearModel>2010){returnPrice = 2000;}
+        if(yearModel>2005){returnPrice = 2300;}
+        if(yearModel<2005){returnPrice = 2800;}
 
-        return 0;
+        return returnPrice;
 
     }
 
-    public static int inspectionPrice(){
+    public static double inspectionPrice(){
         return 550;
     }
 

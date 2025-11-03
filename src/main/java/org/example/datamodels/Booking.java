@@ -5,12 +5,13 @@ import java.time.LocalDateTime;
 public abstract class Booking {
 
     protected int id;
+    protected Vehicle vehicle;
     protected static int nextID;
     protected LocalDateTime date;
     protected String contactEmail;
     protected boolean isFinished = false;
 
-    public Booking(LocalDateTime date, String contactEmail) {
+    public Booking(Vehicle vehicle,LocalDateTime date, String contactEmail) {
         this.date = date;
         this.contactEmail = contactEmail;
         this.id = nextID;
