@@ -2,7 +2,7 @@ package org.example.datamodels;
 
 import java.time.LocalDateTime;
 
-public abstract class Booking {
+public abstract class Booking implements PaidService {
 
     protected int id;
     protected Vehicle vehicle;
