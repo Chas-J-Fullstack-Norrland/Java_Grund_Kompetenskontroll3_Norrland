@@ -23,7 +23,6 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
 
     public String selectMenuOption(String message) throws IllegalStateException {
         if(menuOptions == null|| menuOptions.isEmpty()){
-            //Log to file and menu,  No options included
             throw new IllegalStateException("Menu instance contains no viable options");
         }
 
@@ -43,7 +42,6 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
                 }
             }catch(IOException e){
 
-                //log to file
                 throw new RuntimeException();
             }
         }
@@ -61,7 +59,7 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
         menuOptions.forEach(System.out::println);
     }
 
-    //Lets the user input text not defined in menuoptions.
+
     public String readTextInput(String message){
         if(!message.isBlank()){
             System.out.println(message);
@@ -82,7 +80,7 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
 
     }
 
-    //Same as previous,  But for numbers specifically.
+
     public int readNumberInput(String message) {
         if (!message.isBlank()) {
             System.out.println(message);
