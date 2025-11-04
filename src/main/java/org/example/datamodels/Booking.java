@@ -65,4 +65,5 @@ public abstract class Booking implements PaidService {
                 ", isFinished=" + isFinished +
                 '}';
     }
+
 }
