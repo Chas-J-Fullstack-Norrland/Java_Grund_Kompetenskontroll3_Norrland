@@ -10,24 +10,20 @@ public class Mailfilter {
 
     private static final Logger log = LoggerFactory.getLogger(Mailfilter.class);
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(
-            "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"
+    private static final Pattern emailPattern = Pattern.compile(
+            "^(?![_.-])[A-Za-z0-9._%+-]+(?<![_.-])@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$"
     );
 
-    private static final Predicate<String> EMAIL_VALIDATOR = email -> {
-        if (email == null || email.trim().isEmpty()) {
-            log.warn("Email is null or empty");
-            return false;
-        }
-        String trimmed = email.trim();
-        boolean matches = EMAIL_PATTERN.matcher(trimmed).matches();
-        if (!matches) {
-            log.warn("Invalid email format: {}", trimmed);
-        }
-        return matches;
-    };
 
-    public static boolean validateEmail(String email) {
-        return EMAIL_VALIDATOR.test(email);
+    public  boolean validateEmail(String email) {
+       if(email == null){
+           log.warn("Email is null");
+           return false;
+       }
+        boolean isValid = emailPattern.matcher(email).matches();
+        if (!isValid) {
+            log.warn("Invalid email format: {}", email);
+        }
+        return isValid;
     }
 }
