@@ -2,17 +2,20 @@ package org.example.datamodels;
 
 public class PriceList {
 
-    public static int service(int yearModel){
+    public static int maintenencePrice(int yearModel){
 
 
-        //keep prices in an easy to edit list of sorts,
-        // Compare with year model to fetch from said list
+        if(yearModel>2020){return 1500;}
+        if(yearModel>2015){return 1800;}
+        if(yearModel>2010){return 2000;}
+        if(yearModel>2005){return 2300;}
+        if(yearModel<2005){return 2800;}
 
-        return 0;
+        throw new NumberFormatException("Int yearModel did not match any listed valueRange");
 
     }
 
-    public static int inspectionPrice(){
+    public static double inspectionPrice(){
         return 550;
     }
 

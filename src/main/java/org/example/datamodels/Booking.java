@@ -2,16 +2,26 @@ package org.example.datamodels;
 
 import java.time.LocalDateTime;
 
-public abstract class Booking {
+public abstract class Booking implements PaidService {
 
     protected int id;
+    protected Vehicle vehicle;
     protected static int nextID;
     protected LocalDateTime date;
     protected String contactEmail;
     protected boolean isFinished = false;
 
-    public Booking(LocalDateTime date, String contactEmail) {
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public Booking(Vehicle vehicle, LocalDateTime date, String contactEmail) {
         this.date = date;
+        this.vehicle = vehicle;
         this.contactEmail = contactEmail;
         this.id = nextID;
         nextID++;
