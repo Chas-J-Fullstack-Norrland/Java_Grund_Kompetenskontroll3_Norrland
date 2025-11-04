@@ -16,13 +16,7 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) {
 
-
-
-
-
     VehicleBookingInitialize startupProgram = new VehicleBookingInitialize();
-
-        System.out.println(VehicleBookingInitialize.class.getSimpleName());
     startupProgram.setup();
 
 
