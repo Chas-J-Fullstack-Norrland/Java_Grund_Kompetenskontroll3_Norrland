@@ -1,9 +1,13 @@
 package org.example;
 
+import org.example.datamodels.BookedInspection;
 import org.example.datamodels.Booking;
+import org.example.datamodels.Car;
+import org.example.datamodels.Vehicle;
 import org.example.menu.TerminalMenu;
 import org.example.repository.Repository;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
