@@ -21,14 +21,23 @@ public class MailBooking  {
         }
 
 
-
         String bookingMessage = format("Booking Confirmation:\nBooking ID: %s\nDate: %s\nContact Email: %s\n",
-                booking.getID(), booking.getDate(),booking.getContactEmail());
+                booking.getID(),
+                booking.getDate(),
+                booking.getContactEmail());
 
         logger.info("Sending booking confirmation email:\n{}", bookingMessage);
     }
 
     public void sendBookingCompletion(bookedInspection inspection) {
+
+        if (inspection == null) {
+            logger.warn("Attempted to send completion confirmation for null booking.");
+            return;
+        }
+
+
+
         String completion = format("Booking Confirmation:\nBooking ID: %s\nDate: %s\nContact Email: %s\nPrice%s\n",
                 inspection.getID(),
                 inspection.getDate().format(FMT),
