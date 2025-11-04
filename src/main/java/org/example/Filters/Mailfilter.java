@@ -3,7 +3,7 @@ package org.example.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.function.Predicate;
+
 import java.util.regex.Pattern;
 
 public class Mailfilter {
