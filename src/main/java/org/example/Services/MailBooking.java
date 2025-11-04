@@ -1,7 +1,6 @@
 package org.example.Services;
 
 import org.example.datamodels.Booking;
-import org.example.datamodels.bookedInspection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,7 @@ public class MailBooking  {
         logger.info("Sending booking confirmation email:\n{}", bookingMessage);
     }
 
-    public void sendBookingCompletion(bookedInspection inspection) {
+    public void sendBookingCompletion(Booking inspection) {
 
         if (inspection == null) {
             logger.warn("Attempted to send completion confirmation for null booking.");
