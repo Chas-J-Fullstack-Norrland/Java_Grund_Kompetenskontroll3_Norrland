@@ -2,11 +2,11 @@ package org.example.datamodels;
 
 import java.time.LocalDateTime;
 
-public class bookedInspection extends Booking implements PaidService {
+public class BookedInspection extends Booking implements PaidService {
 
     private double price;
 
-    public bookedInspection(LocalDateTime date, String contactEmail) {
+    public BookedInspection(LocalDateTime date, String contactEmail) {
         super(date, contactEmail);
 
         price = PriceList.inspectionPrice();

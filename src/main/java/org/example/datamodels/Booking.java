@@ -46,14 +46,6 @@ public abstract class Booking {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public static void initNextID(int nextAvailableId) {
-        nextID = nextAvailableId;
-    }
-
     @Override
     public String toString() {
         return "Booking{" +
