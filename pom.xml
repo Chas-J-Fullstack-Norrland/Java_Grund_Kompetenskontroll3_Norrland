@@ -35,5 +35,22 @@
             <artifactId>logstash-logback-encoder</artifactId>
             <version>${logstash-encoder.version}</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
+
+
 </project>

@@ -45,4 +45,14 @@ public abstract class Booking {
     public int getID() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", date=" + date +
+                ", contactEmail='" + contactEmail + '\'' +
+                ", isFinished=" + isFinished +
+                '}';
+    }
 }
