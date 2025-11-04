@@ -29,7 +29,7 @@ public class MailBooking  {
     }
 
     public void sendBookingCompletion(bookedInspection inspection) {
-        String completion = format("Booking Confirmation:\nBooking ID: %s\nDate: %s\nContact Email: %s\nPrice%s/n",
+        String completion = format("Booking Confirmation:\nBooking ID: %s\nDate: %s\nContact Email: %s\nPrice%s\n",
                 inspection.getID(),
                 inspection.getDate().format(FMT),
                 inspection.getContactEmail(),
