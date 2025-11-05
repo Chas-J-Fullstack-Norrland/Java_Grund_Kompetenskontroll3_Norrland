@@ -1,7 +1,10 @@
 package org.example;
 
 
+import ch.qos.logback.core.model.Model;
 import org.example.datamodels.Booking;
+import org.example.datamodels.filters.BookingFilters;
+import org.example.datamodels.filters.VehicleFilters;
 import org.example.datamodels.sorters.BookingSorter;
 import org.example.datamodels.sorters.VehicleSorter;
 import org.example.menu.OptionSelectionInterface;
@@ -13,10 +16,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.print.Book;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
 import java.util.function.Predicate;
 
 
@@ -63,16 +68,84 @@ public class VehicleBookingApp {
                 //case "printall" -> bookingRepository.print()
                 case "printdetail" -> System.out.println(bookingRepository.get(userInput.readNumberInput("Which BookingID do you wish to view")).toString());
                 case "printsorted" -> printSorted();
+                case "printfiltered" -> {
+                    try{
+                        printFiltered();
+                    }catch (NullPointerException e){
+                        log.error("Ended up with a null predicate",e);
+                    }
+                }
                 case "SetAsComplete" -> bookingRepository.get(userInput.readNumberInput("Which BookingID was finished?")).setFinished(true); //Example!! Replace with proper implementation
 
                 case "quit" -> running = false;
             }
+
+            userInput.readAny("Press enter to continue");
+
         }
 
     }
 
-    private void printFiltered(){
+    private void printFiltered() throws NullPointerException{
 
+        Set<String> filterOptions = new LinkedHashSet<>(
+                Set.of(
+                        "vehicle olderthen",
+                        "vehicle newerthen",
+                        "model year",
+                        "model name",
+                        "registration",
+                        "customer email",
+                        "booking date",
+                        "booking beforedate",
+                        "booking afterdate",
+                        "booking status"
+                )
+        );
+
+        TerminalMenu filterSelection = new TerminalMenu(filterOptions,System.in);
+        printSelectionFields(filterSelection.getMenuOptions());
+
+        Predicate<Booking> predicate = null;
+        switch (filterSelection.selectMenuOption("Select a filtering method")){
+
+            case "vehicle olderthen" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelOlderThan(filterSelection.readNumberInput("What year")));
+            case "vehicle newerthen" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelNewerThan(filterSelection.readNumberInput("What year")));
+
+            case "model year" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelEquals(filterSelection.readNumberInput("What year")));
+            case "model name" -> predicate = BookingFilters.forVehicle(VehicleFilters.modelNameContains("Which string do we match?"));
+
+            case "registration" -> predicate = BookingFilters.forVehicle(VehicleFilters.registrationEquals("Which reg?"));
+            case "customer email" -> predicate = BookingFilters.customerEmailEquals("Enter the customers Email");
+
+            case "booking type"-> predicate = BookingFilters.bookingType(filterSelection.readTextInput("What kind of appointment? ex Inspection,Repair,Maintenance"));
+            case "booking id" -> predicate = BookingFilters.atDate(LocalDate.parse(filterSelection.readTextInput("What date 'yyyy-mm-dd'")));
+            case "booking beforedate" ->  predicate = BookingFilters.dateOlderThan(parseDateEntry(filterSelection));
+            case "booking afterdate" -> predicate = BookingFilters.dateNewerThan(parseDateEntry(filterSelection));
+            case "booking date" -> {try{
+                    predicate = BookingFilters.atDate(parseDateEntry(filterSelection).toLocalDate());
+                } catch (NullPointerException e) {
+                    log.error("Parsed",e);
+                    throw e;
+                }
+            }
+        }
+        BookingReporter.outputBookingSummary(bookingRepository.getFilteredSet(predicate).stream().toList());
+    }
+
+    private LocalDateTime parseDateEntry(UserInputInterface menu){
+
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String input = menu.readTextInput("What date and time; Format 'yyyy-mm-dd hh:mm");
+
+        try {
+            return LocalDateTime.parse(input,dateTimeFormatter);
+        } catch (DateTimeParseException e) {
+
+            log.error("Could not parse input into date",e);
+            throw e;
+        }
     }
 
     private void printSorted(){

@@ -14,13 +14,13 @@ public class InitializationService {
 
         BookedInspection b1 = new BookedInspection(
                 new Car("abc-123","Nizzan",1995),
-                LocalDateTime.of(2025, 11, 10, 14, 30),
+                LocalDateTime.of(2025, 4, 10, 14, 30),
                 "anna.svensson@example.com"
         );
 
         BookedInspection b2 = new BookedInspection(
                 new Car("meh-123","Toyotta macro",1995),
-                LocalDateTime.of(2025, 11, 12, 9, 0),
+                LocalDateTime.of(2025, 6, 12, 9, 0),
                 "karl.nilsson@example.com"
         );
 
@@ -32,7 +32,7 @@ public class InitializationService {
 
         BookedInspection b4 = new BookedInspection(
                 new Car("USA-555","StationVagon v7",1995),
-                LocalDateTime.of(2025, 11, 10, 14, 30),
+                LocalDateTime.of(2025, 12, 10, 14, 30),
                 "pelle.olsson@example.com"
         );
 
