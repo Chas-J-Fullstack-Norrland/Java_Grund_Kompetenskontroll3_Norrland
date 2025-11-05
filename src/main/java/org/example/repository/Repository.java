@@ -6,8 +6,15 @@ import java.util.stream.Collectors;
 
 public class Repository<K,V> {
 
-    Map<K,V> repository = new HashMap<>();
+     Map<K,V> repository = new HashMap<>();
 
+     public Repository(){
+
+     }
+
+     public Repository(Map<K,V> map){
+         this.repository = map;
+     }
 
     public void add(K key, V value){
         repository.put(key,value);
@@ -29,7 +36,7 @@ public class Repository<K,V> {
         return repository.values().stream().sorted(comparator).collect(Collectors.toList());
     }
 
-    
+
 
 
 
