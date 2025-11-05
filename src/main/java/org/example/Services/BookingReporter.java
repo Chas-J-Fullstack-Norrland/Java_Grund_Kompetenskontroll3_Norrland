@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 public class BookingReporter {
 
@@ -21,7 +20,7 @@ public class BookingReporter {
 
     public static void outputBookingSummary(List<Booking> bookings) {
 
-        log.info("Genererar bokningssummering för {} bokningar...", bookings.size());
+        log.info("Skapar bokningssummering för {} bokningar...", bookings.size());
 
         System.out.println("--- Bokningsrapport ---");
         System.out.println("ID\tDatum\t\t\tStatus");
@@ -45,39 +44,29 @@ public class BookingReporter {
         return id + "\t" + formatDate + "\t" + status;
     }
 
-    public static void outputSpecificBookingDetails(List<Booking> bookings, int idToFind) {
+    public static void outputSpecificBookingDetails(Booking booking) {
 
-        log.info("Letar efter specifik bokning med ID: {}", idToFind);
+        if (booking == null) {
+            log.warn("outputSpecificBookingDetails anropades med ett null-objekt.");
+            System.out.println("--- Fel ---");
+            System.out.println("Ett internt fel inträffade.");
+            System.out.println("-----------");
+            return;
+        }
 
-        Optional<Booking> bookingOptional = bookings.stream()
-                .filter(b -> b.getID() == idToFind)
-                .findFirst();
+        log.info("Skriver ut detaljer för bokning ID: {}", booking.getID());
 
-        bookingOptional.ifPresentOrElse(
-                booking -> {
-                    log.info("Hittade bokning med ID: {}", idToFind);
+        System.out.println("--- Detaljerad information ---");
+        System.out.println("ID: \t\t" + booking.getID());
+        String status = booking.isFinished() ? "Klar" : "Väntande";
+        System.out.println("Status: \t" + status);
+        System.out.println("Datum: \t\t" + booking.getDate().format(formatter));
+        System.out.println("Kontakt: \t" + booking.getContactEmail());
 
-                    System.out.println("--- Detaljerad information ---");
-                    System.out.println("ID: \t\t" + booking.getID());
-                    String status = booking.isFinished() ? "Klar" : "Väntande";
-                    System.out.println("Status: \t" + status);
-                    System.out.println("Datum: \t\t" + booking.getDate().format(formatter));
-                    System.out.println("Kontakt: \t" + booking.getContactEmail());
-
-                    if (booking instanceof BookedInspection inspection) {
-                        System.out.println("Typ: \t\tBesiktning");
-                        System.out.println("Pris: \t\t" + inspection.getPrice() + " SEK");
-                    }
-                    System.out.println("---------------------------------");
-                },
-
-                () -> {
-                    log.warn("Kunde inte hitta någon bokning med ID: {}", idToFind);
-
-                    System.out.println("--- Fel ---");
-                    System.out.println("Kunde inte hitta någon bokning med ID: " + idToFind);
-                    System.out.println("-----------");
-                }
-        );
+        if (booking instanceof BookedInspection inspection) {
+            System.out.println("Typ: \t\tBesiktning");
+            System.out.println("Pris: \t\t" + inspection.getPrice() + " SEK");
+        }
+        System.out.println("---------------------------------");
     }
 }
