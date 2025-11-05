@@ -13,6 +13,7 @@ import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
 import org.example.services.BookingReporter;
+import org.example.services.BookingSortingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,7 @@ public class VehicleBookingApp {
     private OptionSelectionInterface menu;
     private UserInputInterface userInput;
     private BookingFilterService filterService;
+    private BookingSortingService sortingService;
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
 
@@ -41,6 +43,7 @@ public class VehicleBookingApp {
         this.menu = menuOptions;
         this.userInput = IOReader;
         this.filterService = new BookingFilterService(repository);
+        this.sortingService = new BookingSortingService(repository);
 
 
     }
@@ -70,10 +73,16 @@ public class VehicleBookingApp {
 
                 case "printall" -> BookingReporter.outputBookingSummary(bookingRepository.toList());
                 case "printdetail" -> BookingReporter.outputSpecificBookingDetails(bookingRepository.get(userInput.readNumberInput("Which BookingID do you wish to view")));
-                case "printsorted" -> printSorted();
+                case "printsorted" ->{
+                    try{
+                        BookingReporter.outputBookingSummary(sortingService.printSorted());
+                    }catch (NullPointerException e){
+                        log.error("Ended up with a null comparator",e);
+                    }
+                }
                 case "printfiltered" -> {
                     try{
-                        filterService.printFiltered();
+                        BookingReporter.outputBookingSummary(filterService.printFiltered());
                     }catch (NullPointerException e){
                         log.error("Ended up with a null predicate",e);
                     }
@@ -86,56 +95,6 @@ public class VehicleBookingApp {
             userInput.readAny("Press enter to continue");
 
         }
-
-    }
-
-
-
-
-
-    private void printSorted(){
-
-        Set<String> sortingOptions = new HashSet<>(
-                Set.of(
-                        "year",
-                        "registration",
-                        "id",
-                        "date",
-                        "status"
-                )
-        );
-        TerminalMenu sortingSelection = new TerminalMenu(sortingOptions,System.in);
-        printSelectionFields(sortingSelection.getMenuOptions());
-
-
-        Comparator<Booking> comparator = null;
-        switch(sortingSelection.selectMenuOption("Select a Method")){
-
-            case "year" -> comparator = BookingSorter.sortByVehicle(VehicleSorter.sortByYearMade());
-            case "registration" -> comparator = BookingSorter.sortByVehicle(VehicleSorter.sortByRegistration());
-            case "id" -> comparator = BookingSorter.sortByID();
-            case "date" -> comparator = BookingSorter.sortByDate();
-            case "status" -> comparator = BookingSorter.sortByFinished();
-
-        }
-
-        try{
-            BookingReporter.outputBookingSummary(
-                    bookingRepository.getSortedCollection(comparator)
-            );
-        } catch ( NullPointerException e) {
-            log.warn("Tried to sort with a nullObject", e);
-        }
-
-    }
-
-
-    private void printSelectionFields(Set<String> optionsSet){
-
-        System.out.println("--------------------------");
-        System.out.println("Available fields:");
-        optionsSet.forEach(System.out::println);
-        System.out.println("--------------------------");
 
     }
 
