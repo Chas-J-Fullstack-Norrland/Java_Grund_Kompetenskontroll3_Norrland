@@ -11,6 +11,7 @@ import org.example.menu.OptionSelectionInterface;
 import org.example.menu.TerminalMenu;
 import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
+import org.example.services.BookingFilterService;
 import org.example.services.BookingReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,7 @@ public class VehicleBookingApp {
     private Repository<Integer, Booking> bookingRepository;
     private OptionSelectionInterface menu;
     private UserInputInterface userInput;
+    private BookingFilterService filterService;
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
 
@@ -38,6 +40,7 @@ public class VehicleBookingApp {
         this.bookingRepository = repository;
         this.menu = menuOptions;
         this.userInput = IOReader;
+        this.filterService = new BookingFilterService(repository);
 
 
     }
@@ -70,7 +73,7 @@ public class VehicleBookingApp {
                 case "printsorted" -> printSorted();
                 case "printfiltered" -> {
                     try{
-                        printFiltered();
+                        filterService.printFiltered();
                     }catch (NullPointerException e){
                         log.error("Ended up with a null predicate",e);
                     }
@@ -86,67 +89,9 @@ public class VehicleBookingApp {
 
     }
 
-    private void printFiltered() throws NullPointerException{
-
-        Set<String> filterOptions = new LinkedHashSet<>(
-                Set.of(
-                        "vehicle olderthen",
-                        "vehicle newerthen",
-                        "model year",
-                        "model name",
-                        "registration",
-                        "customer email",
-                        "booking date",
-                        "booking beforedate",
-                        "booking afterdate",
-                        "booking status"
-                )
-        );
-
-        TerminalMenu filterSelection = new TerminalMenu(filterOptions,System.in);
-        printSelectionFields(filterSelection.getMenuOptions());
-
-        Predicate<Booking> predicate = null;
-        switch (filterSelection.selectMenuOption("Select a filtering method")){
-
-            case "vehicle olderthen" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelOlderThan(filterSelection.readNumberInput("What year")));
-            case "vehicle newerthen" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelNewerThan(filterSelection.readNumberInput("What year")));
-
-            case "model year" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelEquals(filterSelection.readNumberInput("What year")));
-            case "model name" -> predicate = BookingFilters.forVehicle(VehicleFilters.modelNameContains("Which string do we match?"));
-
-            case "registration" -> predicate = BookingFilters.forVehicle(VehicleFilters.registrationEquals("Which reg?"));
-            case "customer email" -> predicate = BookingFilters.customerEmailEquals("Enter the customers Email");
-
-            case "booking type"-> predicate = BookingFilters.bookingType(filterSelection.readTextInput("What kind of appointment? ex Inspection,Repair,Maintenance"));
-            case "booking id" -> predicate = BookingFilters.atDate(LocalDate.parse(filterSelection.readTextInput("What date 'yyyy-mm-dd'")));
-            case "booking beforedate" ->  predicate = BookingFilters.dateOlderThan(parseDateEntry(filterSelection));
-            case "booking afterdate" -> predicate = BookingFilters.dateNewerThan(parseDateEntry(filterSelection));
-            case "booking date" -> {try{
-                    predicate = BookingFilters.atDate(parseDateEntry(filterSelection).toLocalDate());
-                } catch (NullPointerException e) {
-                    log.error("Parsed",e);
-                    throw e;
-                }
-            }
-        }
-        BookingReporter.outputBookingSummary(bookingRepository.getFilteredSet(predicate).stream().toList());
-    }
-
-    private LocalDateTime parseDateEntry(UserInputInterface menu){
 
 
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String input = menu.readTextInput("What date and time; Format 'yyyy-mm-dd hh:mm");
 
-        try {
-            return LocalDateTime.parse(input,dateTimeFormatter);
-        } catch (DateTimeParseException e) {
-
-            log.error("Could not parse input into date",e);
-            throw e;
-        }
-    }
 
     private void printSorted(){
 

@@ -1,15 +1,24 @@
 package org.example.menu;
 
+import org.example.VehicleBookingApp;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Set;
 
 public class TerminalMenu implements OptionSelectionInterface, UserInputInterface {
 
     private Set<String> menuOptions;
     private BufferedReader reader;
+    private static final Logger log = LoggerFactory.getLogger(TerminalMenu.class);
 
     public TerminalMenu(Set<String> menuOptions, InputStream in){
         reader = new BufferedReader(new InputStreamReader(in));
@@ -127,6 +136,45 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
 
     public void setMenuOptions(Set<String> options) {
         this.menuOptions = options;
+    }
+
+    public void printSelectionFields(){
+
+        System.out.println("--------------------------");
+        System.out.println("Available fields:");
+        menuOptions.forEach(System.out::println);
+        System.out.println("--------------------------");
+
+    }
+
+    public LocalDateTime parseDateTimeEntry(){
+
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String input = this.readTextInput("What date and time; Format 'yyyy-mm-dd hh:mm");
+
+        try {
+            return LocalDateTime.parse(input,dateTimeFormatter);
+        } catch (DateTimeParseException e) {
+
+            log.error("Could not parse input into date",e);
+            throw e;
+        }
+    }
+
+    public LocalDate parseDateEntry(){
+
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String input = this.readTextInput("What date and time; Format 'yyyy-mm-dd'");
+
+        try {
+            return LocalDate.parse(input,dateTimeFormatter);
+        } catch (DateTimeParseException e) {
+
+            log.error("Could not parse input into date",e);
+            throw e;
+        }
     }
 
 
