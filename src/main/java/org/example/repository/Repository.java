@@ -1,7 +1,8 @@
 package org.example.repository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Repository<K,V> {
 
@@ -19,6 +20,17 @@ public class Repository<K,V> {
     public V get(K key){
         return repository.get(key);
     }
+
+    public Set<V> getFilteredSet(Predicate<V> predicate){
+        return repository.values().stream().filter(predicate).collect(Collectors.toSet());
+    }
+
+    public List<V> getSortedCollection(Comparator<V> comparator){
+        return repository.values().stream().sorted(comparator).collect(Collectors.toList());
+    }
+
+    
+
 
 
 
