@@ -28,6 +28,10 @@ public class Repository<K,V> {
         return repository.get(key);
     }
 
+    public List<V> toList(){
+         return repository.values().stream().toList();
+    }
+
     public Set<V> getFilteredSet(Predicate<V> predicate){
         return repository.values().stream().filter(predicate).collect(Collectors.toSet());
     }
