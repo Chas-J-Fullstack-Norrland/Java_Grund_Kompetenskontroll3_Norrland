@@ -10,6 +10,15 @@ public abstract class Booking implements PaidService {
     protected LocalDateTime date;
     protected String contactEmail;
     protected boolean isFinished = false;
+    protected String type;
+    protected String status;
+
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+
+    public String getStatus() { return status: }
+    public void setStatus(String status) { this.status = status; }
+
 
     public Vehicle getVehicle() {
         return vehicle;
