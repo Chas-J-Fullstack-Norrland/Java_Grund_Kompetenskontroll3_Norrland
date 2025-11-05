@@ -66,7 +66,7 @@ public class VehicleBookingApp {
                 }
 
                 case "printall" -> BookingReporter.outputBookingSummary(bookingRepository.toList());
-                case "printdetail" -> System.out.println(bookingRepository.get(userInput.readNumberInput("Which BookingID do you wish to view")).toString());
+                case "printdetail" -> BookingReporter.outputSpecificBookingDetails(bookingRepository.get(userInput.readNumberInput("Which BookingID do you wish to view")));
                 case "printsorted" -> printSorted();
                 case "printfiltered" -> {
                     try{
