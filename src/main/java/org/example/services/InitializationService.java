@@ -38,7 +38,6 @@ public class InitializationService {
                 LocalDateTime.of(2025, 12, 10, 14, 30),
                 "pelle.olsson@example.com"
         );
-        b4.setFinished(false);
 
         databaseBookings.add(b1);
         databaseBookings.add(b2);
