@@ -27,6 +27,10 @@ public abstract class Booking implements PaidService {
         nextID++;
     }
 
+    protected Booking(){
+
+    }
+
 
     public LocalDateTime getDate() {
         return date;
