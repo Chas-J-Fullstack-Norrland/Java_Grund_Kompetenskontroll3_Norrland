@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class VehicleBookingInitialize {
 
     Set<String> menuOptions = new LinkedHashSet<>(Set.of(
-            "new","remove","printdetail","printfiltered","printsorted","quit"
+            "new", "edit", "remove","printdetail","printfiltered","printsorted","quit"
     ));
 
     TerminalMenu newMenu = new TerminalMenu(menuOptions,System.in);

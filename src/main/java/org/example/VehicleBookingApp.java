@@ -3,6 +3,7 @@ package org.example;
 
 import ch.qos.logback.core.model.Model;
 import org.example.datamodels.Booking;
+import org.example.datamodels.BookingEditingService;
 import org.example.datamodels.BookingFactory;
 import org.example.datamodels.filters.BookingFilters;
 import org.example.datamodels.filters.VehicleFilters;
@@ -67,7 +68,10 @@ public class VehicleBookingApp {
 
                     bookingRepository.add(newBooking.getID(), newBooking);
                 }
-                //case "edit" -> BookingEditService/Menu.edit(repository.get(userinput.readNumberInput()))
+                case "edit" -> {
+                    BookingEditingService edit = new BookingEditingService();
+                    edit.editBooking(bookingRepository.get(userInput.readNumberInput("What is the ID of the booking we're looking for?")));
+                }
                 case "remove" -> {
                     Booking removedBooking = bookingRepository.remove(userInput.readNumberInput("What is the ID of the booking you wish to remove?"));
                     //log.info(removedBooking)
