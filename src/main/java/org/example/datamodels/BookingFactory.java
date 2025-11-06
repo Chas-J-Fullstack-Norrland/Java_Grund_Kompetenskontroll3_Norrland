@@ -1,6 +1,7 @@
 package org.example.datamodels;
 
 import org.example.menu.TerminalMenu;
+import org.example.validators.LicensePlateFilter;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -18,11 +19,16 @@ public class BookingFactory {
     }
     public Booking createBookingProcess() {
 
+        LicensePlateFilter lpValidator = new LicensePlateFilter();
         Set<String> menuOptions = new HashSet<>(Set.of("Inspection", "Repair","Maintenance"));
 
         TerminalMenu menu = new TerminalMenu(menuOptions, System.in);
 
-        String registration = menu.readTextInput("Skriv in din registreringsskylt");
+        String registration;
+        registration = menu.readTextInput("Skriv in din registreringsskylt");
+        if (!lpValidator.validateLicensePlate(registration)) {
+            System.out.println("Ogiltigt registreringsskyltformat. Försök igen.");
+        }
         String Model = menu.readTextInput("Skriv in din bilmodell");
         int yearModel = menu.readNumberInput("Vilken årsmodell har du?");
         LocalDateTime date = LocalDateTime.parse(menu.readTextInput("Vilken tid vill du boka?"));
