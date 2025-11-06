@@ -9,40 +9,56 @@ import java.util.Set;
 
 public class BookingFactory {
     public Booking createInspection(Vehicle vehicle, LocalDateTime date, String contactEmail) {
-        return new BookedInspection(vehicle,date, contactEmail);
+        return new BookedInspection(vehicle, date, contactEmail);
     }
+
     public Booking createRepair(Vehicle vehicle, LocalDateTime date, String contactEmail) {
-        return new BookedRepair(vehicle,date, contactEmail);
+        return new BookedRepair(vehicle, date, contactEmail);
     }
+
     public Booking createMaintenance(Vehicle vehicle, LocalDateTime date, String contactEmail) {
-        return new BookedMaintenance(vehicle,date, contactEmail);
+        return new BookedMaintenance(vehicle, date, contactEmail);
     }
+
     public Booking createBookingProcess() {
 
         LicensePlateFilter lpValidator = new LicensePlateFilter();
-        Set<String> menuOptions = new HashSet<>(Set.of("Inspection", "Repair","Maintenance"));
+        Set<String> menuOptions = new HashSet<>(Set.of("Inspection", "Repair", "Maintenance"));
 
         TerminalMenu menu = new TerminalMenu(menuOptions, System.in);
 
         String registration;
-        registration = menu.readTextInput("Skriv in din registreringsskylt");
-        if (!lpValidator.validateLicensePlate(registration)) {
+        while (true) {
+            registration = menu.readTextInput("Skriv in din registreringsskylt");
+
+           if(lpValidator.validateLicensePlate(registration)){
+
+                break;
+            }
             System.out.println("Ogiltigt registreringsskyltformat. Försök igen.");
         }
-        String Model = menu.readTextInput("Skriv in din bilmodell");
-        int yearModel = menu.readNumberInput("Vilken årsmodell har du?");
-        LocalDateTime date = LocalDateTime.parse(menu.readTextInput("Vilken tid vill du boka?"));
-        String contactEmail = menu.readTextInput("Skriv in din e-mailadress tack.");
 
-        Vehicle vehicle = new Car(registration, Model, yearModel);
-        Booking booking = null;
-        switch (menu.selectMenuOption("Vad vill du boka?")) {
-            case "Inspection" -> { booking = createInspection(vehicle, date, contactEmail); }
-            case "Repair" -> { booking = createRepair(vehicle, date, contactEmail); }
-            case "Maintenance" -> { booking = createMaintenance(vehicle, date, contactEmail); }
+            String Model = menu.readTextInput("Skriv in din bilmodell");
+            int yearModel = menu.readNumberInput("Vilken årsmodell har du?");
+            LocalDateTime date = LocalDateTime.parse(menu.readTextInput("Vilken tid vill du boka?"));
+            String contactEmail = menu.readTextInput("Skriv in din e-mailadress tack.");
+
+            Vehicle vehicle = new Car(registration, Model, yearModel);
+            Booking booking = null;
+            switch (menu.selectMenuOption("Vad vill du boka?")) {
+                case "Inspection" -> {
+                    booking = createInspection(vehicle, date, contactEmail);
+                }
+                case "Repair" -> {
+                    booking = createRepair(vehicle, date, contactEmail);
+                }
+                case "Maintenance" -> {
+                    booking = createMaintenance(vehicle, date, contactEmail);
+                }
+
+            }
+            return booking;
 
         }
-        return booking;
-
     }
-}
+
