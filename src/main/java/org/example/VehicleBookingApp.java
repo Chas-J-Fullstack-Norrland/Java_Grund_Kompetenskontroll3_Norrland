@@ -76,37 +76,20 @@ public class VehicleBookingApp {
                     edit.editBooking(bookingRepository.get(userInput.readNumberInput("What is the ID of the booking we're looking for?")));
                 }
                 case "remove" -> {
-                    int idToRemove = userInput.readNumberInput("What is the ID of the booking you wish to remove?");
-                    Booking toRemove = bookingRepository.get(idToRemove);
-                    if (toRemove == null) {
-                        System.out.println("Ingen bokning med ID " + idToRemove);
-                        break;
-                    }
-                    System.out.println("Du är på väg att ta bort följande bokning: ");
-                    System.out.println(toRemove);
-                    String confirm = userInput.readTextInput("Skriv 'JA' för att bekräfta borttagningen, annars lämna tomt:");
-                    if (!"JA".equalsIgnoreCase(confirm.trim())) {
-                        System.out.println("Borttagning avbröts.");
-                        break;
-                    }
-                    try {
-                        Booking removed = deletionService.deleteBooking(idToRemove);
-                        if (removed != null) {
-                            System.out.println("Bokning " + idToRemove + " borttagen.");
-                            log.info("Bokning borttagen: id={}", idToRemove);
-                        } else {
-                            System.out.println("Bokning fanns inte vid borttagning.");
-                            log.warn("Försökte ta bort icke-existerande bokning: id={}", idToRemove);
+
+                    Integer idToRemove = userInput.readNumberInput("What is the ID of the booking you wish to remove?");
+
+                    BookingReporter.outputSpecificBookingDetails(bookingRepository.get(idToRemove));
+
+                    if(userInput.readTextInput("You are about to remove this booking, Type 'y' to proceed ").equals("y")){
+                        Booking removedBooking = bookingRepository.remove(idToRemove);
+
+                        if(removedBooking == null){
+                            System.out.println("No such booking with that ID");
+                        } else{
+                            log.info("Removed booking {}", removedBooking);
                         }
-                    } catch (IllegalStateException ex) {
-                        System.out.println("Borttagning nekad: " + ex.getMessage());
-                        log.warn("Borttagning nekad för id={}: {}", idToRemove, ex.getMessage());
-                    } catch (Exception ex) {
-                        System.out.println("Fel vid borttagning: " + ex.getMessage());
-                        log.error("Okänt fel vid borttagning id={}", idToRemove, ex);
                     }
-                    //Booking removedBooking = bookingRepository.remove(userInput.readNumberInput("What is the ID of the booking you wish to remove?"));
-                    //log.info(removedBooking)
                 }
 
                 case "printall" -> BookingReporter.outputBookingSummary(bookingRepository.toList());
