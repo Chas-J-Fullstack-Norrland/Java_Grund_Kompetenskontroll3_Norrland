@@ -58,7 +58,7 @@ public abstract class Booking implements PaidService {
 
     @Override
     public String toString() {
-        return "Booking{" +
+        return "Booking{"+ vehicle.toString() +
                 "id=" + id +
                 ", date=" + date +
                 ", contactEmail='" + contactEmail + '\'' +

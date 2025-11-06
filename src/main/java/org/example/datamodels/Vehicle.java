@@ -6,6 +6,18 @@ public abstract class Vehicle {
     protected String model;
     protected int yearModel;
 
+    public void setRegistration(String registration) {
+        this.registration = registration;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setYearModel(int yearModel) {
+        this.yearModel = yearModel;
+    }
+
     public Vehicle(String registration, String model, int yearModel) {
         this.registration = registration;
         this.model = model;
