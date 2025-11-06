@@ -24,6 +24,8 @@ public class Repository<K,V> {
         return repository.remove(key);
     }
 
+    public void replace(K key, V value){repository.replace(key,value);}
+
     public V get(K key){
         return repository.get(key);
     }

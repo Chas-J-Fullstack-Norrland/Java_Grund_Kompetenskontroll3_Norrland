@@ -70,7 +70,8 @@ public class VehicleBookingApp {
                 }
                 case "edit" -> {
                     BookingEditingService edit = new BookingEditingService();
-                    edit.editBooking(bookingRepository.get(userInput.readNumberInput("What is the ID of the booking we're looking for?")));
+                    Booking editedBooking = edit.editBooking(bookingRepository.get(userInput.readNumberInput("What is the ID of the booking we're looking for?")));
+                    bookingRepository.replace(editedBooking.getID(),editedBooking);
                 }
                 case "remove" -> {
                     Booking removedBooking = bookingRepository.remove(userInput.readNumberInput("What is the ID of the booking you wish to remove?"));
