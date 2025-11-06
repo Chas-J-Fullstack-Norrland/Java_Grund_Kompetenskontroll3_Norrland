@@ -1,16 +1,10 @@
 package org.example;
 
-
-import ch.qos.logback.core.model.Model;
+import org.example.datamodels.BookedRepair;
 import org.example.datamodels.Booking;
 import org.example.datamodels.BookingEditingService;
 import org.example.datamodels.BookingFactory;
-import org.example.datamodels.filters.BookingFilters;
-import org.example.datamodels.filters.VehicleFilters;
-import org.example.datamodels.sorters.BookingSorter;
-import org.example.datamodels.sorters.VehicleSorter;
 import org.example.menu.OptionSelectionInterface;
-import org.example.menu.TerminalMenu;
 import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
@@ -19,24 +13,17 @@ import org.example.services.BookingSortingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.print.Book;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.function.Predicate;
 
 
 public class VehicleBookingApp {
 
-    private Repository<Integer, Booking> bookingRepository;
-    private OptionSelectionInterface menu;
-    private UserInputInterface userInput;
-    private BookingFilterService filterService;
-    private BookingSortingService sortingService;
-    private BookingFactory factory = new BookingFactory();
+    private final Repository<Integer, Booking> bookingRepository;
+    private final OptionSelectionInterface menu;
+    private final UserInputInterface userInput;
+    private final BookingFilterService filterService;
+    private final BookingSortingService sortingService;
+    private final BookingFactory factory = new BookingFactory();
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
 
@@ -93,7 +80,7 @@ public class VehicleBookingApp {
                         log.error("Ended up with a null predicate",e);
                     }
                 }
-                case "SetAsComplete" -> bookingRepository.get(userInput.readNumberInput("Which BookingID was finished?")).setFinished(true); //Example!! Replace with proper implementation
+                case "SetAsComplete" -> this.completeBooking();
 
                 case "quit" -> running = false;
             }
@@ -102,6 +89,56 @@ public class VehicleBookingApp {
 
         }
 
+    }
+
+    private void completeBooking() {
+        int id = userInput.readNumberInput("Vilket boknings-ID vill du slutföra?");
+
+        Booking booking = bookingRepository.get(id);
+
+        if (booking == null) {
+            log.warn("Kunde inte hitta någon bokning med ID: {}", id);
+            System.out.println("Fel: Hittade ingen bokning med det ID:t.");
+            return;
+        }
+
+        if (booking.isFinished()) {
+            log.info("Bokning {} är redan markerad som slutförd.", id);
+            System.out.println("Denna bokning är redan markerad som klar.");
+            return;
+        }
+
+        if (booking instanceof BookedRepair repair) {
+            log.debug("Bokning {} är en reparation, frågar efter pris.", id);
+            System.out.println("Detta är en reparation. Ett pris måste anges.");
+
+            double price = 0;
+            boolean priceIsValid = false;
+
+            while (!priceIsValid) {
+                String priceString = userInput.readTextInput("Ange mekanikerns slutpris (t.ex. 4500.50): ");
+                try {
+                    price = Double.parseDouble(priceString);
+                    if (price < 0) {
+                        System.out.println("Priset kan inte vara negativt. Försök igen.");
+                        log.warn("Användaren angav ett negativt pris: {}", price);
+                    } else {
+                        priceIsValid = true;
+                    }
+                } catch (NumberFormatException e) {
+                    log.warn("Ogiltig pris-input: {}", priceString, e);
+                    System.out.println("Ogiltigt format. Använd siffror (t.ex. 4500.50).");
+                }
+            }
+
+            repair.setPrice(price);
+            log.info("Pris satt till {} för reparation {}", price, id);
+            System.out.println("Pris uppdaterat till: " + price + " SEK");
+        }
+
+        booking.setFinished(true);
+        System.out.println("Bokning " + id + " har markerats som slutförd.");
+        log.info("Bokning {} markerad som slutförd.", id);
     }
 
 }
