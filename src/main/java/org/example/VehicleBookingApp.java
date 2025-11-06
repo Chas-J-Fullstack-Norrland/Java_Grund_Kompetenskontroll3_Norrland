@@ -3,6 +3,7 @@ package org.example;
 
 import ch.qos.logback.core.model.Model;
 import org.example.datamodels.Booking;
+import org.example.datamodels.BookingFactory;
 import org.example.datamodels.filters.BookingFilters;
 import org.example.datamodels.filters.VehicleFilters;
 import org.example.datamodels.sorters.BookingSorter;
@@ -34,6 +35,7 @@ public class VehicleBookingApp {
     private UserInputInterface userInput;
     private BookingFilterService filterService;
     private BookingSortingService sortingService;
+    private BookingFactory factory = new BookingFactory();
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
 
@@ -61,7 +63,7 @@ public class VehicleBookingApp {
                 case "new" -> {
 
 
-                    Booking newBooking = bookingFactory.createBooking();
+                    Booking newBooking = factory.createBookingProcess();
 
                     bookingRepository.add(newBooking.getID(), newBooking);
                 }
