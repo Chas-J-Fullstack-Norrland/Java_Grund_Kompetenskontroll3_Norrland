@@ -3,6 +3,7 @@ package org.example.services;
 import org.example.datamodels.Booking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.example.datamodels.PaidService;
 
 import java.time.format.DateTimeFormatter;
 
@@ -22,26 +23,30 @@ public class MailBooking  {
 
         String bookingMessage = format("Booking Confirmation:\nBooking ID: %s\nDate: %s\nContact Email: %s\n",
                 booking.getID(),
-                booking.getDate(),
+                booking.getDate().format(FMT),
                 booking.getContactEmail());
 
         logger.info("Sending booking confirmation email:\n{}", bookingMessage);
     }
 
-    public void sendBookingCompletion(Booking inspection) {
+    public void sendBookingCompletion(Booking booking) {
 
-        if (inspection == null) {
+        if (booking == null) {
             logger.warn("Attempted to send completion confirmation for null booking.");
             return;
         }
 
+        String priceLine = "";
+        if (booking instanceof PaidService p) {
+            priceLine = format("Price: %.2f SEK\n", p.getPrice());
+        }
 
 
         String completion = format("Booking Confirmation:\nBooking ID: %s\nDate: %s\nContact Email: %s\nPrice%s\n",
-                inspection.getID(),
-                inspection.getDate().format(FMT),
-                inspection.getContactEmail(),
-                inspection.getPrice()
+                booking.getID(),
+                booking.getDate().format(FMT),
+                booking.getContactEmail(),
+                priceLine
 
         );
 
