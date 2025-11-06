@@ -61,9 +61,9 @@ public class VehicleBookingApp {
                 case "new" -> {
 
 
-                    //Booking newBooking = bookingFactory.createBooking();
+                    Booking newBooking = bookingFactory.createBooking();
 
-                    //bookingRepository.add(newBooking.getID(), newBooking);
+                    bookingRepository.add(newBooking.getID(), newBooking);
                 }
                 //case "edit" -> BookingEditService/Menu.edit(repository.get(userinput.readNumberInput()))
                 case "remove" -> {
