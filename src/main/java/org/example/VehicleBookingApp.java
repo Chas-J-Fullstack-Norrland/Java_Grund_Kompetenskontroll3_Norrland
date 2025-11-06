@@ -18,6 +18,7 @@ import org.example.services.BookingReporter;
 import org.example.services.BookingSortingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.example.Services.BookingDeletionService;
 
 import java.awt.print.Book;
 import java.text.DateFormat;
@@ -36,6 +37,7 @@ public class VehicleBookingApp {
     private UserInputInterface userInput;
     private BookingFilterService filterService;
     private BookingSortingService sortingService;
+    private BookingDeletionService deletionService;
     private BookingFactory factory = new BookingFactory();
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
@@ -47,6 +49,7 @@ public class VehicleBookingApp {
         this.userInput = IOReader;
         this.filterService = new BookingFilterService(repository);
         this.sortingService = new BookingSortingService(repository);
+        this.deletionService = new BookingDeletionService(repository);
 
 
     }
@@ -73,7 +76,36 @@ public class VehicleBookingApp {
                     edit.editBooking(bookingRepository.get(userInput.readNumberInput("What is the ID of the booking we're looking for?")));
                 }
                 case "remove" -> {
-                    Booking removedBooking = bookingRepository.remove(userInput.readNumberInput("What is the ID of the booking you wish to remove?"));
+                    int idToRemove = userInput.readNumberInput("What is the ID of the booking you wish to remove?");
+                    Booking toRemove = bookingRepository.get(idToRemove);
+                    if (toRemove == null) {
+                        System.out.println("Ingen bokning med ID " + idToRemove);
+                        break;
+                    }
+                    System.out.println("Du är på väg att ta bort följande bokning: ");
+                    System.out.println(toRemove);
+                    String confirm = userInput.readTextInput("Skriv 'JA' för att bekräfta borttagningen, annars lämna tomt:");
+                    if (!"JA".equalsIgnoreCase(confirm.trim())) {
+                        System.out.println("Borttagning avbröts.");
+                        break;
+                    }
+                    try {
+                        Booking removed = deletionService.deleteBooking(idToRemove);
+                        if (removed != null) {
+                            System.out.println("Bokning " + idToRemove + " borttagen.");
+                            log.info("Bokning borttagen: id={}", idToRemove);
+                        } else {
+                            System.out.println("Bokning fanns inte vid borttagning.");
+                            log.warn("Försökte ta bort icke-existerande bokning: id={}", idToRemove);
+                        }
+                    } catch (IllegalStateException ex) {
+                        System.out.println("Borttagning nekad: " + ex.getMessage());
+                        log.warn("Borttagning nekad för id={}: {}", idToRemove, ex.getMessage());
+                    } catch (Exception ex) {
+                        System.out.println("Fel vid borttagning: " + ex.getMessage());
+                        log.error("Okänt fel vid borttagning id={}", idToRemove, ex);
+                    }
+                    //Booking removedBooking = bookingRepository.remove(userInput.readNumberInput("What is the ID of the booking you wish to remove?"));
                     //log.info(removedBooking)
                 }
 
