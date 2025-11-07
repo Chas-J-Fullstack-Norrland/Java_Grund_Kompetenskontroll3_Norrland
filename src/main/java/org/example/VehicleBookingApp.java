@@ -1,16 +1,12 @@
 package org.example;
 
 
-import ch.qos.logback.core.model.Model;
+
+import org.example.Services.MailBooking;
 import org.example.datamodels.Booking;
 import org.example.datamodels.BookingEditingService;
 import org.example.datamodels.BookingFactory;
-import org.example.datamodels.filters.BookingFilters;
-import org.example.datamodels.filters.VehicleFilters;
-import org.example.datamodels.sorters.BookingSorter;
-import org.example.datamodels.sorters.VehicleSorter;
 import org.example.menu.OptionSelectionInterface;
-import org.example.menu.TerminalMenu;
 import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
@@ -18,15 +14,8 @@ import org.example.services.BookingReporter;
 import org.example.services.BookingSortingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.awt.print.Book;
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.function.Predicate;
+
 
 
 public class VehicleBookingApp {
@@ -37,6 +26,7 @@ public class VehicleBookingApp {
     private BookingFilterService filterService;
     private BookingSortingService sortingService;
     private BookingFactory factory = new BookingFactory();
+    private MailBooking mailbooking;
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
 
@@ -47,7 +37,7 @@ public class VehicleBookingApp {
         this.userInput = IOReader;
         this.filterService = new BookingFilterService(repository);
         this.sortingService = new BookingSortingService(repository);
-
+        this.mailbooking = new MailBooking();
 
     }
 
@@ -67,6 +57,9 @@ public class VehicleBookingApp {
                     Booking newBooking = factory.createBookingProcess();
 
                     bookingRepository.add(newBooking.getID(), newBooking);
+                    //mailing service can be called here to send confirmation
+                    mailbooking.sendBookingConfirmation(newBooking);
+
                 }
                 case "edit" -> {
                     BookingEditingService edit = new BookingEditingService();
@@ -93,7 +86,11 @@ public class VehicleBookingApp {
                         log.error("Ended up with a null predicate",e);
                     }
                 }
-                case "SetAsComplete" -> bookingRepository.get(userInput.readNumberInput("Which BookingID was finished?")).setFinished(true); //Example!! Replace with proper implementation
+                case "SetAsComplete" -> {
+                   Booking b = bookingRepository.get(userInput.readNumberInput("Which BookingID was finished?"))
+                           b.setFinished(true);
+                           mailbooking.sendBookingCompletion(b);
+                }
 
                 case "quit" -> running = false;
             }
