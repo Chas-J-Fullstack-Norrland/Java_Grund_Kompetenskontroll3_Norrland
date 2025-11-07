@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class TerminalMenu implements OptionSelectionInterface, UserInputInterface {
 
@@ -151,31 +152,36 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
 
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String input = this.readTextInput("What date and time; Format 'yyyy-mm-dd hh:mm");
 
-        try {
-            return LocalDateTime.parse(input,dateTimeFormatter);
-        } catch (DateTimeParseException e) {
-
-            log.error("Could not parse input into date",e);
-            throw e;
+        while(true){
+            String input = this.readTextInput("What date and time; Format 'yyyy-MM-dd HH:mm'");
+            try {
+                return LocalDateTime.parse(input,dateTimeFormatter);
+            } catch (DateTimeParseException e) {
+                log.error("Could not parse input into dateTime");
+            }
         }
+
+
     }
 
     public LocalDate parseDateEntry(){
 
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String input = this.readTextInput("What date and time; Format 'yyyy-mm-dd'");
 
-        try {
-            return LocalDate.parse(input,dateTimeFormatter);
-        } catch (DateTimeParseException e) {
 
-            log.error("Could not parse input into date",e);
-            throw e;
+        while(true){
+            String input = this.readTextInput("What date and time; Format 'yyyy-mm-dd'");
+            try {
+                return LocalDate.parse(input,dateTimeFormatter);
+            } catch (DateTimeParseException e) {
+                log.error("Could not parse input into date");
+            }
         }
+
     }
+
 
 
 
