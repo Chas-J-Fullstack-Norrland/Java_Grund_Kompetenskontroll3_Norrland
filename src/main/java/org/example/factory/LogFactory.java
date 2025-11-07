@@ -18,7 +18,6 @@ public final class LogFactory {
     public static final String LOGBACK_FILE_NAME_KEY = "LOG_FULL_FILE_PATH";
     private static final String BASE_DIR_PROPERTY_KEY = "app.log.baseDir";
 
-    private static final Logger factoryLogger = LoggerFactory.getLogger(LogFactory.class);
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HHmmss");
@@ -35,20 +34,24 @@ public final class LogFactory {
 
         Path reportDirPath = Paths.get(baseDir, date);
 
+        String logFileName = String.format("%s-%s.json", time, runId);
+        Path logFilePath = reportDirPath.resolve(logFileName);
+        String absolutePath = logFilePath.toAbsolutePath().toString();
+
         try {
             Files.createDirectories(reportDirPath);
-
-            String logFileName = String.format("%s-%s.json", time, runId);
-            Path logFilePath = reportDirPath.resolve(logFileName);
-            String absolutePath = logFilePath.toAbsolutePath().toString();
 
             System.setProperty(LOGBACK_FILE_NAME_KEY, absolutePath);
             MDC.put(MDC_RUN_ID_KEY, runId);
 
+            Logger factoryLogger = LoggerFactory.getLogger(LogFactory.class);
+
             factoryLogger.info("Logging initialized. Reports will be saved to: {}", absolutePath);
 
         } catch (IOException e) {
-            factoryLogger.error("FATAL: Failed to create report directory structure: {}", reportDirPath, e);
+            Logger errorLogger = LoggerFactory.getLogger(LogFactory.class);
+
+            errorLogger.error("FATAL: Failed to create report directory structure: {}", reportDirPath, e);
             throw new RuntimeException("Cannot initialize logging file path.", e);
         }
 
