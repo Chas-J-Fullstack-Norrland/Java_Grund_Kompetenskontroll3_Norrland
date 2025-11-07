@@ -151,7 +151,7 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         while(true){
-            String input = this.readTextInput("What date and time; Format 'yyyy-mm-dd'");
+            String input = this.readTextInput("What date and time; Format 'yyyy-MM-dd HH:mm'");
             try {
                 return LocalDateTime.parse(input,dateTimeFormatter);
             } catch (DateTimeParseException e) {

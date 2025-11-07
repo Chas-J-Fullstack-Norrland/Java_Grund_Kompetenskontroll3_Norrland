@@ -1,1 +1,0 @@
-{"@timestamp":"2025-11-07T17:42:56.7783046+01:00","@version":"1","message":"--- TEST: Logg-systemet har startat och detta FEL ska sparas i JSON-filen. ---","logger_name":"org.example.Main","thread_name":"main","level":"ERROR","level_value":40000,"runId":"695a3666","application":"CriticalProcessor"}

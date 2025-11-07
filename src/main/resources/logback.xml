@@ -3,7 +3,7 @@
     <file>${LOG_FULL_FILE_PATH:-reports/default/default_run.json}</file>
 
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-        <level>WARN</level>
+        <level>INFO</level>
     </filter>
 
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

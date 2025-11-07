@@ -32,9 +32,9 @@ public final class LogFactory {
         String date = now.format(DATE_FORMATTER);
         String time = now.format(TIME_FORMATTER);
 
-        Path reportDirPath = Paths.get(baseDir, date);
+        Path reportDirPath = Paths.get(baseDir);
 
-        String logFileName = String.format("%s-%s.json", time, runId);
+        String logFileName = String.format("%s.json", date);
         Path logFilePath = reportDirPath.resolve(logFileName);
         String absolutePath = logFilePath.toAbsolutePath().toString();
 
@@ -46,7 +46,7 @@ public final class LogFactory {
 
             Logger factoryLogger = LoggerFactory.getLogger(LogFactory.class);
 
-            factoryLogger.info("Logging initialized. Reports will be saved to: {}", absolutePath);
+            factoryLogger.info("Logging initialized. Reports will be saved to: {}", reportDirPath);
 
         } catch (IOException e) {
             Logger errorLogger = LoggerFactory.getLogger(LogFactory.class);
