@@ -32,7 +32,7 @@ public class VehicleBookingApp {
 
 
     VehicleBookingApp(Repository<Integer,Booking> repository, OptionSelectionInterface menuOptions, UserInputInterface IOReader){
-        LogFactory.loggingContext();
+
         this.bookingRepository = repository;
         this.menu = menuOptions;
         this.userInput = IOReader;
@@ -43,7 +43,7 @@ public class VehicleBookingApp {
     }
 
     public void run(){
-    log.info("Program started, Test log");
+
     boolean running = true;
 
         while(running){
@@ -64,8 +64,20 @@ public class VehicleBookingApp {
                     bookingRepository.replace(editedBooking.getID(),editedBooking);
                 }
                 case "remove" -> {
-                    Booking removedBooking = bookingRepository.remove(userInput.readNumberInput("What is the ID of the booking you wish to remove?"));
-                    //log.info(removedBooking)
+
+                    Integer idToRemove = userInput.readNumberInput("What is the ID of the booking you wish to remove?");
+
+                    BookingReporter.outputSpecificBookingDetails(bookingRepository.get(idToRemove));
+
+                    if(userInput.readTextInput("You are about to remove this booking, Type 'y' to proceed ").equals("y")){
+                        Booking removedBooking = bookingRepository.remove(idToRemove);
+
+                        if(removedBooking == null){
+                            System.out.println("No such booking with that ID");
+                        } else{
+                            log.info("Removed booking {}", removedBooking);
+                        }
+                    }
                 }
 
                 case "printall" -> BookingReporter.outputBookingSummary(bookingRepository.toList());
