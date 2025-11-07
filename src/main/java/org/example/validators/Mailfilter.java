@@ -15,7 +15,7 @@ public class Mailfilter {
     );
 
 
-    public  boolean validateEmail(String email) {
+    public static boolean validateEmail(String email) {
        if(email == null){
            log.warn("Email is null");
            return false;

@@ -4,12 +4,14 @@ import org.example.datamodels.BookedRepair;
 import org.example.datamodels.Booking;
 import org.example.datamodels.BookingEditingService;
 import org.example.datamodels.BookingFactory;
+import org.example.factory.LogFactory;
 import org.example.menu.OptionSelectionInterface;
 import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
 import org.example.services.BookingReporter;
 import org.example.services.BookingSortingService;
+import org.example.Services.MailBooking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,8 @@ public class VehicleBookingApp {
     private final BookingFilterService filterService;
     private final BookingSortingService sortingService;
     private final BookingFactory factory = new BookingFactory();
+    private final MailBooking mailBooking = new MailBooking();
+
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
 
@@ -43,7 +47,6 @@ public class VehicleBookingApp {
     boolean running = true;
 
         while(running){
-
             //When adding options, remember to add them during the init step.
             menu.viewMenuOptions();
             switch(menu.selectMenuOption("How can I help you?")){
@@ -52,16 +55,29 @@ public class VehicleBookingApp {
 
 
                     Booking newBooking = factory.createBookingProcess();
-
+                    mailBooking.sendBookingConfirmation(newBooking);
                     bookingRepository.add(newBooking.getID(), newBooking);
                 }
                 case "edit" -> {
                     BookingEditingService edit = new BookingEditingService();
-                    edit.editBooking(bookingRepository.get(userInput.readNumberInput("What is the ID of the booking we're looking for?")));
+                    Booking editedBooking = edit.editBooking(bookingRepository.get(userInput.readNumberInput("What is the ID of the booking we're looking for?")));
+                    bookingRepository.replace(editedBooking.getID(),editedBooking);
                 }
                 case "remove" -> {
-                    Booking removedBooking = bookingRepository.remove(userInput.readNumberInput("What is the ID of the booking you wish to remove?"));
-                    //log.info(removedBooking)
+
+                    Integer idToRemove = userInput.readNumberInput("What is the ID of the booking you wish to remove?");
+
+                    BookingReporter.outputSpecificBookingDetails(bookingRepository.get(idToRemove));
+
+                    if(userInput.readTextInput("You are about to remove this booking, Type 'y' to proceed ").equals("y")){
+                        Booking removedBooking = bookingRepository.remove(idToRemove);
+
+                        if(removedBooking == null){
+                            System.out.println("No such booking with that ID");
+                        } else{
+                            log.info("Removed booking {}", removedBooking);
+                        }
+                    }
                 }
 
                 case "printall" -> BookingReporter.outputBookingSummary(bookingRepository.toList());
@@ -137,6 +153,7 @@ public class VehicleBookingApp {
         }
 
         booking.setFinished(true);
+        mailBooking.sendBookingCompletion(booking);
         System.out.println("Bokning " + id + " har markerats som slutförd.");
         log.info("Bokning {} markerad som slutförd.", id);
     }
