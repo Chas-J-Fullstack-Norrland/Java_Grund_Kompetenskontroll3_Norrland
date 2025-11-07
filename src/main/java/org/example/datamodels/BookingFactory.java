@@ -24,7 +24,6 @@ public class BookingFactory {
     public Booking createBookingProcess() {
 
         LicensePlateFilter lpValidator = new LicensePlateFilter();
-        Mailfilter emailValidator = new Mailfilter();
         Set<String> menuOptions = new HashSet<>(Set.of("Inspection", "Repair", "Maintenance"));
 
         TerminalMenu menu = new TerminalMenu(menuOptions, System.in);
@@ -49,7 +48,7 @@ public class BookingFactory {
             while (true){
 
                 contactEmail = menu.readTextInput("Skriv in din e-mailadress tack.");
-                if (emailValidator.validateEmail(contactEmail)){
+                if (Mailfilter.validateEmail(contactEmail)){
                     break;
                 }
                 System.out.println("Ogiltigt registreringsskyltformat. Försök igen.");
