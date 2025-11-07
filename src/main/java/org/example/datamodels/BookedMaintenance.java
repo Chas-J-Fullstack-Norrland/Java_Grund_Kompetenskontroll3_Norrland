@@ -13,6 +13,15 @@ public class BookedMaintenance extends Booking implements PaidService {
 
     }
 
+    public BookedMaintenance(Booking booking) {
+        super();
+        this.id = booking.id;
+        this.vehicle = booking.vehicle;
+        this.contactEmail = booking.contactEmail;
+        this.date = booking.date;
+        this.price = PriceList.maintenencePrice(vehicle.getYearModel());
+    }
+
     public double getPrice(){
         return price;
     }

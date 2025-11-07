@@ -13,6 +13,15 @@ public class BookedInspection extends Booking implements PaidService {
         price = PriceList.inspectionPrice();
     }
 
+    public BookedInspection(Booking booking){
+        super();
+        this.id = booking.id;
+        this.vehicle = booking.vehicle;
+        this.contactEmail = booking.contactEmail;
+        this.date = booking.date;
+        this.price = PriceList.inspectionPrice();
+    }
+
     public double getPrice(){
         return price;
     }
