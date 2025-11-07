@@ -3,7 +3,7 @@ package org.example;
 import org.example.datamodels.Repair;
 import org.example.datamodels.Booking;
 import org.example.services.BookingEditingService;
-import org.example.datamodels.exceptions.NullExpressionException;
+import org.example.exceptions.NullExpressionException;
 import org.example.factory.BookingFactory;
 import org.example.menu.OptionSelectionInterface;
 import org.example.menu.UserInputInterface;

@@ -1,7 +1,7 @@
 package org.example.services;
 
 import org.example.datamodels.Booking;
-import org.example.datamodels.exceptions.NullExpressionException;
+import org.example.exceptions.NullExpressionException;
 import org.example.datamodels.comparators.BookingSorter;
 import org.example.datamodels.comparators.VehicleSorter;
 import org.example.menu.TerminalMenu;

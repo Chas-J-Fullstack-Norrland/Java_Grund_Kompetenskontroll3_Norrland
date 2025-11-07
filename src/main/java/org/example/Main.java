@@ -2,6 +2,7 @@ package org.example;
 
 
 
+import org.example.factory.LogFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        log.error("--- TEST: Logg-systemet har startat och detta FEL ska sparas i JSON-filen. ---");
+        log.info("Logg-systemet har startat");
         log.info("Applikationen startar nu...");
 
         VehicleBookingInitialize startupProgram = new VehicleBookingInitialize();
