@@ -29,7 +29,7 @@ public class BookingFactory {
 
         String registration;
         while (true) {
-            registration = menu.readTextInput("Skriv in din registreringsskylt");
+            registration = menu.readTextInput("Skriv in din registreringsskylt. Format ABC-123").toUpperCase();
 
            if(lpValidator.validateLicensePlate(registration)){
 
@@ -40,7 +40,7 @@ public class BookingFactory {
 
             String Model = menu.readTextInput("Skriv in din bilmodell");
             int yearModel = menu.readNumberInput("Vilken årsmodell har du?");
-            LocalDateTime date = LocalDateTime.parse(menu.readTextInput("Vilken tid vill du boka?"));
+            LocalDateTime date = menu.parseDateTimeEntry();
             String contactEmail = menu.readTextInput("Skriv in din e-mailadress tack.");
 
             Vehicle vehicle = new Car(registration, Model, yearModel);

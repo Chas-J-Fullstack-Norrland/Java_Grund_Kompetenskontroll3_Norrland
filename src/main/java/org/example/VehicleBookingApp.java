@@ -4,6 +4,7 @@ import org.example.datamodels.BookedRepair;
 import org.example.datamodels.Booking;
 import org.example.datamodels.BookingEditingService;
 import org.example.datamodels.BookingFactory;
+import org.example.factory.LogFactory;
 import org.example.menu.OptionSelectionInterface;
 import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
@@ -24,11 +25,12 @@ public class VehicleBookingApp {
     private final BookingFilterService filterService;
     private final BookingSortingService sortingService;
     private final BookingFactory factory = new BookingFactory();
+
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
 
     VehicleBookingApp(Repository<Integer,Booking> repository, OptionSelectionInterface menuOptions, UserInputInterface IOReader){
-
+        LogFactory.loggingContext();
         this.bookingRepository = repository;
         this.menu = menuOptions;
         this.userInput = IOReader;
@@ -39,11 +41,10 @@ public class VehicleBookingApp {
     }
 
     public void run(){
-
+    log.info("Program started, Test log");
     boolean running = true;
 
         while(running){
-
             //When adding options, remember to add them during the init step.
             menu.viewMenuOptions();
             switch(menu.selectMenuOption("How can I help you?")){
