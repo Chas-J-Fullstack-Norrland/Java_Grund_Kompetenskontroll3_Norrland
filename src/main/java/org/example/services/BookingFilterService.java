@@ -2,6 +2,7 @@ package org.example.services;
 
 import org.example.VehicleBookingApp;
 import org.example.datamodels.Booking;
+import org.example.datamodels.exceptions.NullExpressionException;
 import org.example.datamodels.filters.BookingFilters;
 import org.example.datamodels.filters.VehicleFilters;
 import org.example.menu.TerminalMenu;
@@ -27,7 +28,7 @@ public class BookingFilterService {
         this.repository = repository;
     }
 
-    public List<Booking> printFiltered() throws NullPointerException{
+    public List<Booking> printFiltered() throws NullExpressionException {
 
         Set<String> filterOptions = new LinkedHashSet<>(
                 Set.of(
@@ -67,7 +68,7 @@ public class BookingFilterService {
                 predicate = BookingFilters.atDate(filterSelection.parseDateEntry());
             } catch (NullPointerException e) {
                 log.error("Parsed",e);
-                throw e;
+                throw new NullExpressionException("Cannot filter with a null predicate");
             }
             }
         }
