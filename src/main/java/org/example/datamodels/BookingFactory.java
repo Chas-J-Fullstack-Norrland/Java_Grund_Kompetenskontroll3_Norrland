@@ -30,13 +30,13 @@ public class BookingFactory {
 
         String registration;
         while (true) {
-            registration = menu.readTextInput("Skriv in din registreringsskylt. Format ABC-123").toUpperCase();
+            registration = menu.readTextInput("Skriv in din registreringsskylt. Format ABC 123").toUpperCase();
 
            if(lpValidator.validateLicensePlate(registration)){
 
                 break;
             }
-            System.out.println("Ogiltigt registreringsskyltformat. Försök igen.");
+            System.out.println("Ogiltigt registreringsskyltformat "+registration +". Försök igen.");
         }
 
             String Model = menu.readTextInput("Skriv in din bilmodell");
@@ -47,11 +47,11 @@ public class BookingFactory {
             String contactEmail;
             while (true){
 
-                contactEmail = menu.readTextInput("Skriv in din e-mailadress tack.");
-                if (Mailfilter.validateEmail(contactEmail)){
+                ;
+                if (Mailfilter.validateEmail(contactEmail = menu.readTextInput("Skriv in din e-mailadress tack."))){
                     break;
                 }
-                System.out.println("Ogiltigt registreringsskyltformat. Försök igen.");
+                System.out.println("Ogiltigt email. Försök igen.");
 
             }
 
