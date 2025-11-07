@@ -1,22 +1,16 @@
 package org.example.services;
 
 import org.example.VehicleBookingApp;
-import org.example.datamodels.Booking;
+import org.example.datamodels.*;
 import org.example.datamodels.filters.BookingFilters;
 import org.example.datamodels.filters.VehicleFilters;
-import org.example.menu.TerminalMenu;
-import org.example.menu.UserInputInterface;
+import org.example.menu.*;
 import org.example.repository.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class BookingFilterService {

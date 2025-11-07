@@ -1,7 +1,6 @@
 package org.example.datamodels.filters;
 
 import org.example.datamodels.Vehicle;
-
 import java.util.function.Predicate;
 
 public class VehicleFilters {

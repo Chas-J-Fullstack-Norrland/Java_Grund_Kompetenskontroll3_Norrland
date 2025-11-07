@@ -4,16 +4,11 @@ import org.example.VehicleBookingApp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.io.*;
+import java.time.*;
+import java.time.format.*;
 import java.util.Set;
-import java.util.function.Predicate;
+
 
 public class TerminalMenu implements OptionSelectionInterface, UserInputInterface {
 

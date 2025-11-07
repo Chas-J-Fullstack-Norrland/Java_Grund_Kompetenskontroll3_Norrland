@@ -1,4 +1,4 @@
-package org.example.Services;
+package org.example.services;
 
 import org.example.datamodels.Booking;
 import org.slf4j.Logger;
@@ -36,17 +36,11 @@ public class MailBooking  {
             return;
         }
 
-        String priceLine = "";
-        if (booking instanceof PaidService p) {
-            priceLine = format("Price: %.2f SEK\n", p.getPrice());
-        }
-
-
         String completion = format("Booking Confirmation:\nBooking ID: %s\nDate: %s\nContact Email: %s\nPrice%s\n",
                 booking.getID(),
                 booking.getDate().format(FMT),
                 booking.getContactEmail(),
-                priceLine
+                format("Price: %.2f SEK\n", booking.getPrice())
 
         );
 

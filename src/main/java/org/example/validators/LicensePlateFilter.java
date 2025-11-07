@@ -21,7 +21,7 @@ public class LicensePlateFilter {
 
 
     public LicensePlateFilter() {
-        LogFactory.loggingContext();
+
     }
 
 

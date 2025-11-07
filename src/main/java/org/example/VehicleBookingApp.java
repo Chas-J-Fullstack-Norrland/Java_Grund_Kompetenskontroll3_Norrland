@@ -11,7 +11,7 @@ import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
 import org.example.services.BookingReporter;
 import org.example.services.BookingSortingService;
-import org.example.Services.MailBooking;
+import org.example.services.MailBooking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

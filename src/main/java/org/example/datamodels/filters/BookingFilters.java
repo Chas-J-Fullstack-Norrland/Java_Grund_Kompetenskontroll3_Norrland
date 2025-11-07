@@ -2,7 +2,6 @@ package org.example.datamodels.filters;
 
 import org.example.datamodels.Booking;
 import org.example.datamodels.Vehicle;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.function.Predicate;
