@@ -59,6 +59,7 @@ public class BookingFactory {
 
             Vehicle vehicle = new Car(registration, Model, yearModel);
             Booking booking = null;
+            menu.printSelectionFields();
             switch (menu.selectMenuOption("Vad vill du boka?")) {
                 case "Inspection" -> {
                     booking = createInspection(vehicle, date, contactEmail);
