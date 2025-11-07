@@ -1,6 +1,6 @@
 package org.example.menu;
 
-import org.example.VehicleBookingApp;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,7 @@ import java.util.Set;
 public class TerminalMenu implements OptionSelectionInterface, UserInputInterface {
 
     private Set<String> menuOptions;
-    private BufferedReader reader;
+    private final BufferedReader reader;
     private static final Logger log = LoggerFactory.getLogger(TerminalMenu.class);
 
     public TerminalMenu(Set<String> menuOptions, InputStream in){

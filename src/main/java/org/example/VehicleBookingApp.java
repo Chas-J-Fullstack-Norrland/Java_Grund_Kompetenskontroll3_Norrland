@@ -4,7 +4,6 @@ import org.example.datamodels.BookedRepair;
 import org.example.datamodels.Booking;
 import org.example.datamodels.BookingEditingService;
 import org.example.datamodels.BookingFactory;
-import org.example.factory.LogFactory;
 import org.example.menu.OptionSelectionInterface;
 import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
@@ -128,7 +127,7 @@ public class VehicleBookingApp {
             log.debug("Booking {} is a repair, waiting for price", id);
             System.out.println("This booking is a repair, please set the price");
 
-            Integer price = 0;
+            int price = 0;
             boolean priceIsValid = false;
 
             while (!priceIsValid) {

@@ -1,8 +1,8 @@
 package org.example.datamodels;
 
 import org.example.menu.TerminalMenu;
-import org.example.validators.LicensePlateFilter;
-import org.example.validators.Mailfilter;
+import org.example.validators.RegistrationValidator;
+import org.example.validators.MailValidator;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ public class BookingFactory {
 
     public Booking createBookingProcess() {
 
-        LicensePlateFilter lpValidator = new LicensePlateFilter();
+        RegistrationValidator lpValidator = new RegistrationValidator();
         Set<String> menuOptions = new HashSet<>(Set.of("Inspection", "Repair", "Maintenance"));
 
         TerminalMenu menu = new TerminalMenu(menuOptions, System.in);
@@ -45,30 +45,19 @@ public class BookingFactory {
 
 
             String contactEmail;
-            while (true){
-
-                ;
-                if (Mailfilter.validateEmail(contactEmail = menu.readTextInput("Enter the customers Email"))){
-                    break;
-                }
-                System.out.println("Invalid format. Try again.");
-
-            }
+        while (!MailValidator.validateEmail(contactEmail = menu.readTextInput("Enter the customers Email"))) {
+            System.out.println("Invalid format. Try again.");
+        }
 
 
             Vehicle vehicle = new Car(registration, Model, yearModel);
             Booking booking = null;
             menu.printSelectionFields();
             switch (menu.selectMenuOption("What is the purpose of the booking?")) {
-                case "Inspection" -> {
-                    booking = createInspection(vehicle, date, contactEmail);
-                }
-                case "Repair" -> {
-                    booking = createRepair(vehicle, date, contactEmail);
-                }
-                case "Maintenance" -> {
-                    booking = createMaintenance(vehicle, date, contactEmail);
-                }
+                case "Inspection" -> booking = createInspection(vehicle, date, contactEmail);
+                case "Repair" -> booking = createRepair(vehicle, date, contactEmail);
+                case "Maintenance" -> booking = createMaintenance(vehicle, date, contactEmail);
+
 
             }
             return booking;

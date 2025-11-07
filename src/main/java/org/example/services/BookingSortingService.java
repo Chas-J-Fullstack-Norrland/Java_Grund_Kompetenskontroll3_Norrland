@@ -12,7 +12,7 @@ import java.util.*;
 
 public class BookingSortingService {
 
-    private Repository<Integer, Booking> repository;
+    private final Repository<Integer, Booking> repository;
     private static final Logger log = LoggerFactory.getLogger(BookingSortingService.class);
 
     public BookingSortingService(Repository<Integer,Booking> repository){

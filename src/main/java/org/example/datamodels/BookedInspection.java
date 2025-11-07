@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class BookedInspection extends Booking implements PaidService {
 
-    private double price;
+    private final double price;
 
 
     public BookedInspection(Vehicle vehicle,LocalDateTime date, String contactEmail) {

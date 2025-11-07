@@ -1,7 +1,6 @@
 package org.example.validators;
 
 
-import org.example.factory.LogFactory;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
@@ -12,15 +11,15 @@ import java.util.regex.Pattern;
 
 
 
-public class LicensePlateFilter {
+public class RegistrationValidator {
 
-    private static final Logger logger = LoggerFactory.getLogger(LicensePlateFilter.class);
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationValidator.class);
 
     private static final Pattern LicensePlate = Pattern.compile(
             "^[A-Z]{3} (?:\\d{3}|\\d{2}[A-Z])$");
 
 
-    public LicensePlateFilter() {
+    public RegistrationValidator() {
 
     }
 
