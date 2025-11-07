@@ -4,6 +4,7 @@ import org.example.datamodels.BookedRepair;
 import org.example.datamodels.Booking;
 import org.example.datamodels.BookingEditingService;
 import org.example.datamodels.BookingFactory;
+import org.example.datamodels.exceptions.NullExpressionException;
 import org.example.factory.LogFactory;
 import org.example.menu.OptionSelectionInterface;
 import org.example.menu.UserInputInterface;
@@ -85,14 +86,14 @@ public class VehicleBookingApp {
                 case "printsorted" ->{
                     try{
                         BookingReporter.outputBookingSummary(sortingService.printSorted());
-                    }catch (NullPointerException e){
+                    }catch (NullExpressionException e){
                         log.error("Ended up with a null comparator",e);
                     }
                 }
                 case "printfiltered" -> {
                     try{
                         BookingReporter.outputBookingSummary(filterService.printFiltered());
-                    }catch (NullPointerException e){
+                    }catch (NullExpressionException e){
                         log.error("Ended up with a null predicate",e);
                     }
                 }

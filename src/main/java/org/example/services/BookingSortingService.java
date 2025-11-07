@@ -1,6 +1,7 @@
 package org.example.services;
 
 import org.example.datamodels.Booking;
+import org.example.datamodels.exceptions.NullExpressionException;
 import org.example.datamodels.sorters.BookingSorter;
 import org.example.datamodels.sorters.VehicleSorter;
 import org.example.menu.TerminalMenu;
@@ -23,7 +24,7 @@ public class BookingSortingService {
     }
 
 
-    public List<Booking> printSorted() throws NullPointerException{
+    public List<Booking> printSorted() throws NullExpressionException {
 
         Set<String> sortingOptions = new HashSet<>(
                 Set.of(
@@ -53,7 +54,7 @@ public class BookingSortingService {
             return repository.getSortedCollection(comparator);
         } catch ( NullPointerException e) {
             log.warn("Tried to sort with a nullObject", e);
-            throw e;
+            throw new NullExpressionException("Expressions for sorting cannot be null");
         }
 
     }
