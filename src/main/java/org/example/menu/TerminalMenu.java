@@ -93,15 +93,14 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
             System.out.println(message);
         }
 
-        int inputNumber = 0;
+        int inputNumber;
         String line;
-        boolean validInput = false;
-        while (!validInput) {
+        while (true) {
             try {
                 line = reader.readLine();
                 if (line.matches("[0-9]+")) {
                     inputNumber = Integer.parseInt(line);
-                    validInput = true;
+                    break;
                 }
             } catch (Exception e) {
                 log.error("Unexpected error occurred when reading input");

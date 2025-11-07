@@ -2,16 +2,16 @@ package org.example.datamodels;
 
 import java.time.LocalDateTime;
 
-public class BookedRepair extends Booking implements PaidService{
+public class Repair extends Booking implements PaidService{
     private double price;
     private String action;
 
 
-    public BookedRepair(Vehicle vehicle, LocalDateTime date, String contactEmail) {
+    public Repair(Vehicle vehicle, LocalDateTime date, String contactEmail) {
         super(vehicle, date, contactEmail);
     }
 
-    public BookedRepair(Booking booking, String action){
+    public Repair(Booking booking, String action){
         super();
         this.id = booking.id;
         this.vehicle = booking.vehicle;

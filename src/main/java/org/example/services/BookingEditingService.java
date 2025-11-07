@@ -1,5 +1,9 @@
-package org.example.datamodels;
+package org.example.services;
 
+import org.example.datamodels.Inspection;
+import org.example.datamodels.Maintenance;
+import org.example.datamodels.Repair;
+import org.example.datamodels.Booking;
 import org.example.menu.TerminalMenu;
 
 import java.util.Set;
@@ -35,9 +39,9 @@ public class BookingEditingService  {
              case "YearModel" -> editedBooking.getVehicle().setYearModel(menu.readNumberInput("ModelYear?"));
              case "Model" -> editedBooking.getVehicle().setModel(menu.readTextInput("Model?"));
 
-             case "changeToRepair" -> editedBooking = new BookedRepair(booking,menu.readTextInput("what actions are to be done?"));
-             case "changeToInspection" -> editedBooking = new BookedInspection(booking);
-             case "changeToMaintenance" -> editedBooking = new BookedMaintenance(booking);
+             case "changeToRepair" -> editedBooking = new Repair(booking,menu.readTextInput("what actions are to be done?"));
+             case "changeToInspection" -> editedBooking = new Inspection(booking);
+             case "changeToMaintenance" -> editedBooking = new Maintenance(booking);
 
              case "done" ->{ return editedBooking; }
          }

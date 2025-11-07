@@ -3,7 +3,6 @@ package org.example;
 import org.example.datamodels.Booking;
 import org.example.menu.TerminalMenu;
 import org.example.repository.Repository;
-import org.example.services.InitializationService;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -16,7 +15,7 @@ public class VehicleBookingInitialize {
     ));
 
     TerminalMenu newMenu = new TerminalMenu(menuOptions,System.in);
-    InitializationService dataBaseMock = new InitializationService();
+    DatabaseInitialisation dataBaseMock = new DatabaseInitialisation();
     Repository<Integer, Booking> repository = new Repository<>(
             dataBaseMock.loadBookingsFromDatabase().stream().collect(Collectors.toMap(Booking::getID,b->b)));
     VehicleBookingApp app = new VehicleBookingApp(repository,newMenu,newMenu);

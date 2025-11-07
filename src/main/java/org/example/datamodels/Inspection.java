@@ -1,19 +1,21 @@
 package org.example.datamodels;
 
+import org.example.predefined.PriceList;
+
 import java.time.LocalDateTime;
 
-public class BookedInspection extends Booking implements PaidService {
+public class Inspection extends Booking implements PaidService {
 
     private final double price;
 
 
-    public BookedInspection(Vehicle vehicle,LocalDateTime date, String contactEmail) {
+    public Inspection(Vehicle vehicle, LocalDateTime date, String contactEmail) {
         super(vehicle ,date, contactEmail);
 
         price = PriceList.inspectionPrice();
     }
 
-    public BookedInspection(Booking booking){
+    public Inspection(Booking booking){
         super();
         this.id = booking.id;
         this.vehicle = booking.vehicle;

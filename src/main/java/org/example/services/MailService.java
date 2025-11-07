@@ -3,15 +3,14 @@ package org.example.services;
 import org.example.datamodels.Booking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.example.datamodels.PaidService;
 
 import java.time.format.DateTimeFormatter;
 
 import static java.lang.String.format;
 
 
-public class MailBooking  {
-    private static final Logger logger = LoggerFactory.getLogger(MailBooking.class);
+public class MailService {
+    private static final Logger logger = LoggerFactory.getLogger(MailService.class);
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public void sendBookingConfirmation(Booking booking) {

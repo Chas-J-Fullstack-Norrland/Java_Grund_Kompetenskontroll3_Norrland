@@ -1,20 +1,18 @@
 package org.example;
 
-import org.example.datamodels.BookedRepair;
+import org.example.datamodels.Repair;
 import org.example.datamodels.Booking;
-import org.example.datamodels.BookingEditingService;
-import org.example.datamodels.BookingFactory;
+import org.example.services.BookingEditingService;
+import org.example.factory.BookingFactory;
 import org.example.menu.OptionSelectionInterface;
 import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
 import org.example.services.BookingReporter;
 import org.example.services.BookingSortingService;
-import org.example.services.MailBooking;
+import org.example.services.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 
 public class VehicleBookingApp {
@@ -25,7 +23,7 @@ public class VehicleBookingApp {
     private final BookingFilterService filterService;
     private final BookingSortingService sortingService;
     private final BookingFactory factory = new BookingFactory();
-    private final MailBooking mailBooking = new MailBooking();
+    private final MailService mailService = new MailService();
 
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
@@ -54,7 +52,7 @@ public class VehicleBookingApp {
 
 
                     Booking newBooking = factory.createBookingProcess();
-                    mailBooking.sendBookingConfirmation(newBooking);
+                    mailService.sendBookingConfirmation(newBooking);
                     bookingRepository.add(newBooking.getID(), newBooking);
                 }
                 case "edit" -> {
@@ -123,7 +121,7 @@ public class VehicleBookingApp {
             return;
         }
 
-        if (booking instanceof BookedRepair repair) {
+        if (booking instanceof Repair repair) {
             log.debug("Booking {} is a repair, waiting for price", id);
             System.out.println("This booking is a repair, please set the price");
 
@@ -146,7 +144,7 @@ public class VehicleBookingApp {
         }
 
         booking.setFinished(true);
-        mailBooking.sendBookingCompletion(booking);
+        mailService.sendBookingCompletion(booking);
         System.out.println("Booking " + id + " was marked as completed");
         log.info("Booking {} marked as complete", id);
     }

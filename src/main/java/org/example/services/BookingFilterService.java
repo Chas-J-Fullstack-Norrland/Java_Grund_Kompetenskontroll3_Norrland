@@ -2,8 +2,8 @@ package org.example.services;
 
 
 import org.example.datamodels.*;
-import org.example.datamodels.filters.BookingFilters;
-import org.example.datamodels.filters.VehicleFilters;
+import org.example.datamodels.predicates.BookingFilters;
+import org.example.datamodels.predicates.VehicleFilters;
 import org.example.menu.*;
 import org.example.repository.Repository;
 import org.slf4j.Logger;

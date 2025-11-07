@@ -1,4 +1,4 @@
-package org.example.datamodels;
+package org.example.predefined;
 
 public class PriceList {
 

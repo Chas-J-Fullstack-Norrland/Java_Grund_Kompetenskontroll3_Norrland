@@ -1,4 +1,4 @@
-package org.example.validators;
+package org.example.predefined.validators;
 
 
 import org.slf4j.LoggerFactory;

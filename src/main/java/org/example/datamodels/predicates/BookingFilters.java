@@ -1,4 +1,4 @@
-package org.example.datamodels.filters;
+package org.example.datamodels.predicates;
 
 import org.example.datamodels.Booking;
 import org.example.datamodels.Vehicle;

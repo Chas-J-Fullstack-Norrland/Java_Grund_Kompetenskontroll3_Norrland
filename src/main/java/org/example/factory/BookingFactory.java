@@ -1,8 +1,9 @@
-package org.example.datamodels;
+package org.example.factory;
 
+import org.example.datamodels.*;
 import org.example.menu.TerminalMenu;
-import org.example.validators.RegistrationValidator;
-import org.example.validators.MailValidator;
+import org.example.predefined.validators.RegistrationValidator;
+import org.example.predefined.validators.MailValidator;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -10,15 +11,15 @@ import java.util.Set;
 
 public class BookingFactory {
     public Booking createInspection(Vehicle vehicle, LocalDateTime date, String contactEmail) {
-        return new BookedInspection(vehicle, date, contactEmail);
+        return new Inspection(vehicle, date, contactEmail);
     }
 
     public Booking createRepair(Vehicle vehicle, LocalDateTime date, String contactEmail) {
-        return new BookedRepair(vehicle, date, contactEmail);
+        return new Repair(vehicle, date, contactEmail);
     }
 
     public Booking createMaintenance(Vehicle vehicle, LocalDateTime date, String contactEmail) {
-        return new BookedMaintenance(vehicle, date, contactEmail);
+        return new Maintenance(vehicle, date, contactEmail);
     }
 
     public Booking createBookingProcess() {

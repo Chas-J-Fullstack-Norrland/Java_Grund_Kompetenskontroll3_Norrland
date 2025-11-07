@@ -1,6 +1,6 @@
 package org.example.services;
 
-import org.example.datamodels.BookedInspection;
+import org.example.datamodels.Inspection;
 import org.example.datamodels.Booking;
 
 import org.slf4j.Logger;
@@ -63,7 +63,7 @@ public class BookingReporter {
         System.out.println("Date: \t\t" + booking.getDate().format(formatter));
         System.out.println("Contact: \t" + booking.getContactEmail());
 
-        if (booking instanceof BookedInspection inspection) {
+        if (booking instanceof Inspection inspection) {
             System.out.println("Type: \t\tInspection");
             System.out.println("Price: \t\t" + inspection.getPrice() + " SEK");
         }

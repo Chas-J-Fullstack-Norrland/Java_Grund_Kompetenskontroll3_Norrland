@@ -1,5 +1,6 @@
 package org.example.services;
 
+import org.example.DatabaseInitialisation;
 import org.example.datamodels.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ public class BookingService {
 
     private final List<Booking> bookingDatabase;
 
-    public BookingService(InitializationService initService) {
+    public BookingService(DatabaseInitialisation initService) {
         this.bookingDatabase = new ArrayList<>(initService.loadBookingsFromDatabase());
         log.info("BookingService initierad med {} bokningar.", bookingDatabase.size());
     }
@@ -31,8 +32,8 @@ public class BookingService {
                 .findFirst();
     }
 
-    public BookedRepair createNewRepair(Vehicle vehicle, LocalDateTime date, String contactEmail) {
-        BookedRepair newRepair = new BookedRepair(vehicle, date, contactEmail);
+    public Repair createNewRepair(Vehicle vehicle, LocalDateTime date, String contactEmail) {
+        Repair newRepair = new Repair(vehicle, date, contactEmail);
         this.bookingDatabase.add(newRepair);
         log.info("Ny reparation skapad (ID: {}) för fordon: {}", newRepair.getID(), vehicle.getRegistration());
         return newRepair;

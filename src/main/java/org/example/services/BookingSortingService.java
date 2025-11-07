@@ -1,8 +1,8 @@
 package org.example.services;
 
 import org.example.datamodels.Booking;
-import org.example.datamodels.sorters.BookingSorter;
-import org.example.datamodels.sorters.VehicleSorter;
+import org.example.datamodels.comparators.BookingSorter;
+import org.example.datamodels.comparators.VehicleSorter;
 import org.example.menu.TerminalMenu;
 import org.example.repository.Repository;
 import org.slf4j.Logger;
