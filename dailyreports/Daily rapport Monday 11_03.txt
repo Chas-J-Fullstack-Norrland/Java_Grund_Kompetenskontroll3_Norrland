@@ -1,0 +1,24 @@
+Daglig Rapport:
+Norrland
+
+Slutförda moment:
+
+Nuvarande uppgift:
+Noa F1,F2,F3
+Jonathan F7,F8,F9,F12
+Erik F14
+Nicolas F12,F18
+
+Redo för Granskning:
+F7,F8,F9
+
+Har Granskats:
+-
+
+Gruppen arbetar därefter med:
+F14: Hämta in bokning vid start
+F13: Sortera Bokningar
+F4:  Visa Bokningar,
+
+Begränsningar:
+Arbete är strukturerat men github är nytt för vissa.

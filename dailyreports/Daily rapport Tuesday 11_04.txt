@@ -1,0 +1,24 @@
+Daglig Rapport:
+Norrland
+
+Slutförda moment:
+F8,F9,F10, F1
+
+Nuvarande uppgift:
+Noa F2,F3
+Jonathan F16
+Erik F4,F5
+Nicolas F9
+
+Redo för Granskning:
+F19, F14
+
+Har Granskats:
+F7,F8,F9,F10,f15,f11,f18, F1, F19, F14
+
+Gruppen arbetar därefter med:
+F10,F17:  Flexibelt Pris vid avslutad reparation
+
+Begränsningar:
+Mer github strul
+Problem med att kommunicera logik, Använder pseudokod framöver.
