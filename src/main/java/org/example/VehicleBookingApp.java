@@ -96,7 +96,7 @@ public class VehicleBookingApp {
                         log.error("Ended up with a null predicate",e);
                     }
                 }
-                case "SetAsComplete" -> this.completeBooking();
+                case "complete" -> this.completeBooking();
 
                 case "quit" -> running = false;
             }

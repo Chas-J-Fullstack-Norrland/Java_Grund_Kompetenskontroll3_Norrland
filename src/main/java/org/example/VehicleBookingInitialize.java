@@ -8,12 +8,13 @@ import org.example.services.InitializationService;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 public class VehicleBookingInitialize {
 
-    Set<String> menuOptions = new LinkedHashSet<>(Set.of(
-            "new", "edit", "remove","printdetail","printfiltered","printsorted","quit"
+    Set<String> menuOptions = new TreeSet<>(Set.of(
+            "new", "edit", "remove","complete","printall","printdetail","printfiltered","printsorted","quit"
     ));
 
     TerminalMenu newMenu = new TerminalMenu(menuOptions,System.in);
