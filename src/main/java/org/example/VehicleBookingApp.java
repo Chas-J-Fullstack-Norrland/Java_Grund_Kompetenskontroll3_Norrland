@@ -11,6 +11,7 @@ import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
 import org.example.services.BookingReporter;
 import org.example.services.BookingSortingService;
+import org.example.Services.MailBooking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ public class VehicleBookingApp {
     private final BookingFilterService filterService;
     private final BookingSortingService sortingService;
     private final BookingFactory factory = new BookingFactory();
+    private final MailBooking mailBooking = new MailBooking();
 
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
@@ -53,7 +55,7 @@ public class VehicleBookingApp {
 
 
                     Booking newBooking = factory.createBookingProcess();
-
+                    mailBooking.sendBookingConfirmation(newBooking);
                     bookingRepository.add(newBooking.getID(), newBooking);
                 }
                 case "edit" -> {
@@ -139,6 +141,7 @@ public class VehicleBookingApp {
         }
 
         booking.setFinished(true);
+        mailBooking.sendBookingCompletion(booking);
         System.out.println("Bokning " + id + " har markerats som slutförd.");
         log.info("Bokning {} markerad som slutförd.", id);
     }

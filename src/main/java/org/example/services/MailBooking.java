@@ -1,4 +1,4 @@
-package org.example.services;
+package org.example.Services;
 
 import org.example.datamodels.Booking;
 import org.slf4j.Logger;
