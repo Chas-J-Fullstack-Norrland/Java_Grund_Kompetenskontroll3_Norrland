@@ -13,25 +13,25 @@ public class InitializationService {
         List<Booking> databaseBookings = new ArrayList<>();
 
         BookedInspection b1 = new BookedInspection(
-                new Car("abc-123","Nizzan",1995),
+                new Car("ABC-123","Nizzan",1995),
                 LocalDateTime.of(2025, 4, 10, 14, 30),
                 "anna.svensson@example.com"
         );
 
         BookedInspection b2 = new BookedInspection(
-                new Car("meh-123","Toyotta macro",1995),
+                new Car("MEH-123","Toyottah Macro",1995),
                 LocalDateTime.of(2025, 6, 12, 9, 0),
                 "karl.nilsson@example.com"
         );
 
         BookedInspection b3 = new BookedInspection(
-                new Car("abc-132","Volvo shoebox",1995),
+                new Car("ABC-132","Volvo Shoebox",1995),
                 LocalDateTime.of(2025, 11, 20, 10, 0),
                 "maria.eriksson@example.com"
         );
 
         BookedInspection b4 = new BookedInspection(
-                new Car("USA-555","StationVagon v7",1995),
+                new Car("USA-555","StationWagon v7",1995),
                 LocalDateTime.of(2025, 12, 10, 14, 30),
                 "pelle.olsson@example.com"
         );

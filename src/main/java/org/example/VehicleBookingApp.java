@@ -108,54 +108,48 @@ public class VehicleBookingApp {
     }
 
     private void completeBooking() {
-        int id = userInput.readNumberInput("Vilket boknings-ID vill du slutföra?");
+        int id = userInput.readNumberInput("Select ID of completed booking");
 
         Booking booking = bookingRepository.get(id);
 
         if (booking == null) {
-            log.warn("Kunde inte hitta någon bokning med ID: {}", id);
-            System.out.println("Fel: Hittade ingen bokning med det ID:t.");
+            log.warn("No booking with ID: {}", id);
+            System.out.println("Error: Booking with said ID does not exist");
             return;
         }
 
         if (booking.isFinished()) {
-            log.info("Bokning {} är redan markerad som slutförd.", id);
-            System.out.println("Denna bokning är redan markerad som klar.");
+            log.info("Booking {} is already marked completed", id);
+            System.out.println("This booking is already completed");
             return;
         }
 
         if (booking instanceof BookedRepair repair) {
-            log.debug("Bokning {} är en reparation, frågar efter pris.", id);
-            System.out.println("Detta är en reparation. Ett pris måste anges.");
+            log.debug("Booking {} is a repair, waiting for price", id);
+            System.out.println("This booking is a repair, please set the price");
 
-            double price = 0;
+            Integer price = 0;
             boolean priceIsValid = false;
 
             while (!priceIsValid) {
-                String priceString = userInput.readTextInput("Ange mekanikerns slutpris (t.ex. 4500.50): ");
-                try {
-                    price = Double.parseDouble(priceString);
+                    price = userInput.readNumberInput("Enter the final price (ex. 4500): ");
                     if (price < 0) {
-                        System.out.println("Priset kan inte vara negativt. Försök igen.");
-                        log.warn("Användaren angav ett negativt pris: {}", price);
+                        System.out.println("Price cannot be negative, try again");
+                        log.warn("User entered a negative price: {}", price);
                     } else {
                         priceIsValid = true;
                     }
-                } catch (NumberFormatException e) {
-                    log.warn("Ogiltig pris-input: {}", priceString, e);
-                    System.out.println("Ogiltigt format. Använd siffror (t.ex. 4500.50).");
-                }
             }
 
             repair.setPrice(price);
-            log.info("Pris satt till {} för reparation {}", price, id);
-            System.out.println("Pris uppdaterat till: " + price + " SEK");
+            log.info("Price was set to {} for the repair with ID# {}", price, id);
+            System.out.println("Price set to: " + price + " SEK");
         }
 
         booking.setFinished(true);
         mailBooking.sendBookingCompletion(booking);
-        System.out.println("Bokning " + id + " har markerats som slutförd.");
-        log.info("Bokning {} markerad som slutförd.", id);
+        System.out.println("Booking " + id + " was marked as completed");
+        log.info("Booking {} marked as complete", id);
     }
 
 }

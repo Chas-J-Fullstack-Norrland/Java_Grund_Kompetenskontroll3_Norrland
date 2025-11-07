@@ -30,17 +30,17 @@ public class BookingFactory {
 
         String registration;
         while (true) {
-            registration = menu.readTextInput("Skriv in din registreringsskylt. Format ABC 123").toUpperCase();
+            registration = menu.readTextInput("Registration Plate?. Format ABC 123").toUpperCase();
 
            if(lpValidator.validateLicensePlate(registration)){
 
                 break;
             }
-            System.out.println("Ogiltigt registreringsskyltformat "+registration +". Försök igen.");
+            System.out.println("Registration# "+registration +". is not of viable format. Please try again");
         }
 
-            String Model = menu.readTextInput("Skriv in din bilmodell");
-            int yearModel = menu.readNumberInput("Vilken årsmodell har du?");
+            String Model = menu.readTextInput("Model of the vehicle?");
+            int yearModel = menu.readNumberInput("Year of model?");
             LocalDateTime date = menu.parseDateTimeEntry();
 
 
@@ -48,10 +48,10 @@ public class BookingFactory {
             while (true){
 
                 ;
-                if (Mailfilter.validateEmail(contactEmail = menu.readTextInput("Skriv in din e-mailadress tack."))){
+                if (Mailfilter.validateEmail(contactEmail = menu.readTextInput("Enter the customers Email"))){
                     break;
                 }
-                System.out.println("Ogiltigt email. Försök igen.");
+                System.out.println("Invalid format. Try again.");
 
             }
 
@@ -59,7 +59,7 @@ public class BookingFactory {
             Vehicle vehicle = new Car(registration, Model, yearModel);
             Booking booking = null;
             menu.printSelectionFields();
-            switch (menu.selectMenuOption("Vad vill du boka?")) {
+            switch (menu.selectMenuOption("What is the purpose of the booking?")) {
                 case "Inspection" -> {
                     booking = createInspection(vehicle, date, contactEmail);
                 }
