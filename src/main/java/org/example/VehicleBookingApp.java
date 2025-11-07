@@ -11,6 +11,7 @@ import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
 import org.example.services.BookingReporter;
 import org.example.services.BookingSortingService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ public class VehicleBookingApp {
     private final BookingFilterService filterService;
     private final BookingSortingService sortingService;
     private final BookingFactory factory = new BookingFactory();
+
 
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
