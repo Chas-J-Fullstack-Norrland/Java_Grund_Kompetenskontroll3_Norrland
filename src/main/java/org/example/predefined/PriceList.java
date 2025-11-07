@@ -1,8 +1,8 @@
-package org.example.datamodels;
+package org.example.predefined;
 
 public class PriceList {
 
-    public static int maintenencePrice(int yearModel){
+    public static int maintenancePrice(int yearModel){
 
 
         if(yearModel>2020){return 1500;}

@@ -1,4 +1,4 @@
-package org.example.datamodels.sorters;
+package org.example.datamodels.comparators;
 
 import org.example.datamodels.Vehicle;
 

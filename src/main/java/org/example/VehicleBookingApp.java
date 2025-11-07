@@ -1,22 +1,19 @@
 package org.example;
 
-import org.example.datamodels.BookedRepair;
+import org.example.datamodels.Repair;
 import org.example.datamodels.Booking;
-import org.example.datamodels.BookingEditingService;
-import org.example.datamodels.BookingFactory;
+import org.example.services.BookingEditingService;
 import org.example.datamodels.exceptions.NullExpressionException;
-import org.example.factory.LogFactory;
+import org.example.factory.BookingFactory;
 import org.example.menu.OptionSelectionInterface;
 import org.example.menu.UserInputInterface;
 import org.example.repository.Repository;
 import org.example.services.BookingFilterService;
 import org.example.services.BookingReporter;
 import org.example.services.BookingSortingService;
-import org.example.Services.MailBooking;
+import org.example.services.MailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 
 public class VehicleBookingApp {
@@ -27,7 +24,7 @@ public class VehicleBookingApp {
     private final BookingFilterService filterService;
     private final BookingSortingService sortingService;
     private final BookingFactory factory = new BookingFactory();
-    private final MailBooking mailBooking = new MailBooking();
+    private final MailService mailService = new MailService();
 
     private static final Logger log = LoggerFactory.getLogger(VehicleBookingApp.class);
 
@@ -56,7 +53,7 @@ public class VehicleBookingApp {
 
 
                     Booking newBooking = factory.createBookingProcess();
-                    mailBooking.sendBookingConfirmation(newBooking);
+                    mailService.sendBookingConfirmation(newBooking);
                     bookingRepository.add(newBooking.getID(), newBooking);
                 }
                 case "edit" -> {
@@ -109,54 +106,48 @@ public class VehicleBookingApp {
     }
 
     private void completeBooking() {
-        int id = userInput.readNumberInput("Vilket boknings-ID vill du slutföra?");
+        int id = userInput.readNumberInput("Select ID of completed booking");
 
         Booking booking = bookingRepository.get(id);
 
         if (booking == null) {
-            log.warn("Kunde inte hitta någon bokning med ID: {}", id);
-            System.out.println("Fel: Hittade ingen bokning med det ID:t.");
+            log.warn("No booking with ID: {}", id);
+            System.out.println("Error: Booking with said ID does not exist");
             return;
         }
 
         if (booking.isFinished()) {
-            log.info("Bokning {} är redan markerad som slutförd.", id);
-            System.out.println("Denna bokning är redan markerad som klar.");
+            log.info("Booking {} is already marked completed", id);
+            System.out.println("This booking is already completed");
             return;
         }
 
-        if (booking instanceof BookedRepair repair) {
-            log.debug("Bokning {} är en reparation, frågar efter pris.", id);
-            System.out.println("Detta är en reparation. Ett pris måste anges.");
+        if (booking instanceof Repair repair) {
+            log.debug("Booking {} is a repair, waiting for price", id);
+            System.out.println("This booking is a repair, please set the price");
 
-            double price = 0;
+            int price = 0;
             boolean priceIsValid = false;
 
             while (!priceIsValid) {
-                String priceString = userInput.readTextInput("Ange mekanikerns slutpris (t.ex. 4500.50): ");
-                try {
-                    price = Double.parseDouble(priceString);
+                    price = userInput.readNumberInput("Enter the final price (ex. 4500): ");
                     if (price < 0) {
-                        System.out.println("Priset kan inte vara negativt. Försök igen.");
-                        log.warn("Användaren angav ett negativt pris: {}", price);
+                        System.out.println("Price cannot be negative, try again");
+                        log.warn("User entered a negative price: {}", price);
                     } else {
                         priceIsValid = true;
                     }
-                } catch (NumberFormatException e) {
-                    log.warn("Ogiltig pris-input: {}", priceString, e);
-                    System.out.println("Ogiltigt format. Använd siffror (t.ex. 4500.50).");
-                }
             }
 
             repair.setPrice(price);
-            log.info("Pris satt till {} för reparation {}", price, id);
-            System.out.println("Pris uppdaterat till: " + price + " SEK");
+            log.info("Price was set to {} for the repair with ID# {}", price, id);
+            System.out.println("Price set to: " + price + " SEK");
         }
 
         booking.setFinished(true);
-        mailBooking.sendBookingCompletion(booking);
-        System.out.println("Bokning " + id + " har markerats som slutförd.");
-        log.info("Bokning {} markerad som slutförd.", id);
+        mailService.sendBookingCompletion(booking);
+        System.out.println("Booking " + id + " was marked as completed");
+        log.info("Booking {} marked as complete", id);
     }
 
 }

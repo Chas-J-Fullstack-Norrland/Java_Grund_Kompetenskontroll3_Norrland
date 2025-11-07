@@ -2,21 +2,18 @@ package org.example.services;
 
 import org.example.datamodels.Booking;
 import org.example.datamodels.exceptions.NullExpressionException;
-import org.example.datamodels.sorters.BookingSorter;
-import org.example.datamodels.sorters.VehicleSorter;
+import org.example.datamodels.comparators.BookingSorter;
+import org.example.datamodels.comparators.VehicleSorter;
 import org.example.menu.TerminalMenu;
 import org.example.repository.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class BookingSortingService {
 
-    private Repository<Integer, Booking> repository;
+    private final Repository<Integer, Booking> repository;
     private static final Logger log = LoggerFactory.getLogger(BookingSortingService.class);
 
     public BookingSortingService(Repository<Integer,Booking> repository){

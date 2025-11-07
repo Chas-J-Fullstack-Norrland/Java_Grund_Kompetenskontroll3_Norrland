@@ -1,28 +1,21 @@
 package org.example.services;
 
-import org.example.VehicleBookingApp;
-import org.example.datamodels.Booking;
-import org.example.datamodels.exceptions.NullExpressionException;
-import org.example.datamodels.filters.BookingFilters;
-import org.example.datamodels.filters.VehicleFilters;
-import org.example.menu.TerminalMenu;
-import org.example.menu.UserInputInterface;
+
+import org.example.datamodels.*;
+import org.example.datamodels.predicates.BookingFilters;
+import org.example.datamodels.predicates.VehicleFilters;
+import org.example.menu.*;
 import org.example.repository.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class BookingFilterService {
     private static final Logger log = LoggerFactory.getLogger(BookingFilterService.class);
-    private Repository<Integer, Booking> repository;
+    private final Repository<Integer, Booking> repository;
 
     public BookingFilterService(Repository<Integer, Booking> repository){
         this.repository = repository;
@@ -30,17 +23,17 @@ public class BookingFilterService {
 
     public List<Booking> printFiltered() throws NullExpressionException {
 
-        Set<String> filterOptions = new LinkedHashSet<>(
+        Set<String> filterOptions = new TreeSet<>(
                 Set.of(
-                        "vehicle olderthen",
-                        "vehicle newerthen",
+                        "vehicle older then",
+                        "vehicle newer then",
                         "model year",
                         "model name",
                         "registration",
                         "customer email",
                         "booking date",
-                        "booking beforedate",
-                        "booking afterdate",
+                        "booking before date",
+                        "booking after",
                         "booking status"
                 )
         );
@@ -51,8 +44,8 @@ public class BookingFilterService {
         Predicate<Booking> predicate = null;
         switch (filterSelection.selectMenuOption("Select a filtering method")){
 
-            case "vehicle olderthen" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelOlderThan(filterSelection.readNumberInput("What year")));
-            case "vehicle newerthen" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelNewerThan(filterSelection.readNumberInput("What year")));
+            case "vehicle older then" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelOlderThan(filterSelection.readNumberInput("What year")));
+            case "vehicle newer then" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelNewerThan(filterSelection.readNumberInput("What year")));
 
             case "model year" -> predicate = BookingFilters.forVehicle(VehicleFilters.yearModelEquals(filterSelection.readNumberInput("What year")));
             case "model name" -> predicate = BookingFilters.forVehicle(VehicleFilters.modelNameContains("Which string do we match?"));
@@ -62,8 +55,8 @@ public class BookingFilterService {
 
             case "booking type"-> predicate = BookingFilters.bookingType(filterSelection.readTextInput("What kind of appointment? ex Inspection,Repair,Maintenance"));
             case "booking id" -> predicate = BookingFilters.atDate(LocalDate.parse(filterSelection.readTextInput("What date 'yyyy-mm-dd'")));
-            case "booking beforedate" ->  predicate = BookingFilters.dateOlderThan(filterSelection.parseDateTimeEntry());
-            case "booking afterdate" -> predicate = BookingFilters.dateNewerThan(filterSelection.parseDateTimeEntry());
+            case "booking before date" ->  predicate = BookingFilters.dateOlderThan(filterSelection.parseDateTimeEntry());
+            case "booking after" -> predicate = BookingFilters.dateNewerThan(filterSelection.parseDateTimeEntry());
             case "booking date" -> {try{
                 predicate = BookingFilters.atDate(filterSelection.parseDateEntry());
             } catch (NullPointerException e) {

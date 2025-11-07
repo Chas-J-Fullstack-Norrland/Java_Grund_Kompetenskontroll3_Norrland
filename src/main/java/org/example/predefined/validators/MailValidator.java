@@ -1,4 +1,4 @@
-package org.example.validators;
+package org.example.predefined.validators;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.regex.Pattern;
 
-public class Mailfilter {
+public class MailValidator {
 
-    private static final Logger log = LoggerFactory.getLogger(Mailfilter.class);
+    private static final Logger log = LoggerFactory.getLogger(MailValidator.class);
 
     private static final Pattern emailPattern = Pattern.compile(
             "^(?![_.-])[A-Za-z0-9._%+-]+(?<![_.-])@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$"

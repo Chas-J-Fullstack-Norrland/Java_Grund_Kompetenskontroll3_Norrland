@@ -1,24 +1,19 @@
 package org.example.menu;
 
-import org.example.VehicleBookingApp;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.io.*;
+import java.time.*;
+import java.time.format.*;
 import java.util.Set;
-import java.util.function.Predicate;
+
 
 public class TerminalMenu implements OptionSelectionInterface, UserInputInterface {
 
     private Set<String> menuOptions;
-    private BufferedReader reader;
+    private final BufferedReader reader;
     private static final Logger log = LoggerFactory.getLogger(TerminalMenu.class);
 
     public TerminalMenu(Set<String> menuOptions, InputStream in){
@@ -33,6 +28,7 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
 
     public String selectMenuOption(String message) throws IllegalStateException {
         if(menuOptions == null|| menuOptions.isEmpty()){
+            log.error("Tried to run options selection while no options were defined");
             throw new IllegalStateException("Menu instance contains no viable options");
         }
 
@@ -52,6 +48,7 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
                 }
             }catch(IOException e){
 
+                log.error("Unexpected error occurred when reading input");
                 throw new RuntimeException();
             }
         }
@@ -79,7 +76,7 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
         while(input.isBlank()){
             try{input = reader.readLine();}
             catch(IOException e){
-                //log implement log to file
+                log.error("Unexpected error occurred when reading input");
                 throw new RuntimeException();
             }
 
@@ -96,21 +93,21 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
             System.out.println(message);
         }
 
-        int inputNumber = 0;
+        int inputNumber;
         String line;
-        boolean validInput = false;
-        while (!validInput) {
+        while (true) {
             try {
                 line = reader.readLine();
                 if (line.matches("[0-9]+")) {
                     inputNumber = Integer.parseInt(line);
-                    validInput = true;
+                    break;
                 }
             } catch (Exception e) {
-                //log to file
+                log.error("Unexpected error occurred when reading input");
                 throw new RuntimeException();
             }
 
+            System.out.println("That is not a valid number, looking for integer");
         }
 
         return inputNumber;
@@ -129,7 +126,7 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
         try{
             s = reader.readLine();
         } catch (IOException e) {
-            //Implement log to file !
+            log.error("Unexpected error occurred when reading input");
         }
 
         return s;
@@ -154,11 +151,11 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         while(true){
-            String input = this.readTextInput("What date and time; Format 'yyyy-MM-dd HH:mm'");
+            String input = this.readTextInput("What date and time; Format 'yyyy-mm-dd'");
             try {
                 return LocalDateTime.parse(input,dateTimeFormatter);
             } catch (DateTimeParseException e) {
-                log.error("Could not parse input into dateTime");
+                log.error("Could not parse {} into dateTime format",input,e);
             }
         }
 
@@ -176,7 +173,7 @@ public class TerminalMenu implements OptionSelectionInterface, UserInputInterfac
             try {
                 return LocalDate.parse(input,dateTimeFormatter);
             } catch (DateTimeParseException e) {
-                log.error("Could not parse input into date");
+                log.error("Could not parse {} into date format",input,e);
             }
         }
 

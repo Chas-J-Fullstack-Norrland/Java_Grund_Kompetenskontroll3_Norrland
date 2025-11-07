@@ -1,17 +1,16 @@
-package org.example.Services;
+package org.example.services;
 
 import org.example.datamodels.Booking;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.example.datamodels.PaidService;
 
 import java.time.format.DateTimeFormatter;
 
 import static java.lang.String.format;
 
 
-public class MailBooking  {
-    private static final Logger logger = LoggerFactory.getLogger(MailBooking.class);
+public class MailService {
+    private static final Logger logger = LoggerFactory.getLogger(MailService.class);
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public void sendBookingConfirmation(Booking booking) {
@@ -36,17 +35,11 @@ public class MailBooking  {
             return;
         }
 
-        String priceLine = "";
-        if (booking instanceof PaidService p) {
-            priceLine = format("Price: %.2f SEK\n", p.getPrice());
-        }
-
-
         String completion = format("Booking Confirmation:\nBooking ID: %s\nDate: %s\nContact Email: %s\nPrice%s\n",
                 booking.getID(),
                 booking.getDate().format(FMT),
                 booking.getContactEmail(),
-                priceLine
+                format("Price: %.2f SEK\n", booking.getPrice())
 
         );
 
